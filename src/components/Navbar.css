@@ -1,0 +1,54 @@
+.navbar-nav > li {
+  padding-left: 20px;
+  padding-right: 20px;
+}
+
+.navbar-custom {
+  background-color: rgb(66, 91, 146);
+}
+
+.navbar-brand {
+  font-weight: bold;
+  font-family: "Roboto";
+  color: white;
+}
+
+.navbar-brand:hover {
+  color: #b8b521;
+}
+
+#button {
+  background-color: rgb(66, 91, 146);
+  border-color: rgb(66, 91, 146);
+  font-family: "Roboto";
+}
+
+#button:hover {
+  color: #b8b521;
+}
+
+#button:focus {
+  box-shadow: none;
+}
+
+#dropdown-toggle {
+  background-color: rgb(66, 91, 146);
+  border-color: rgb(66, 91, 146);
+  font-family: "Roboto";
+}
+
+#dropdown-toggle:hover {
+  color: #b8b521;
+}
+
+#dropdown-toggle:focus {
+  box-shadow: none;
+}
+
+#dropdown-item {
+  font-family: "Roboto";
+}
+
+#dropdown-item:hover {
+  background-color: #b8b521;
+}
