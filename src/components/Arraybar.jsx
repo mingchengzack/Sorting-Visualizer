@@ -8,7 +8,7 @@ import {
 } from "../algorithms/sorting";
 
 function randomIntFromInterval(min, max) {
-  return Math.floor(Math.random() * (max - min + 1) + min);
+  return min + Math.floor(Math.random() * (max - min + 1));
 }
 
 class Arraybar extends Component {
@@ -32,19 +32,15 @@ class Arraybar extends Component {
   randomGenerateArray() {
     const array = [];
 
-    for (let i = 0; i < this.props.size; i++) {
-      array.push(randomIntFromInterval(5, 1000));
+    for (let i = 0; i < this.props.arraySize; i++) {
+      array.push(randomIntFromInterval(5, 500));
     }
-
-    // make the display the same everytime
-    array[Math.floor(Math.random() * array.length)] = 1000;
-
     this.setState({ array });
   }
 
-  visualize(speed) {
+  visualize(algorithm, speed) {
     const { array } = this.state;
-    switch (this.props.algorithm) {
+    switch (algorithm) {
       case "Bubble Sort":
         bubbleSort(array);
         break;
@@ -52,6 +48,7 @@ class Arraybar extends Component {
         insertionSort(array);
         break;
       case "Quick Sort":
+        quickSort(array);
         break;
       case "Merge Sort":
         mergeSort(array);
@@ -65,11 +62,12 @@ class Arraybar extends Component {
       default:
         break;
     }
-    console.log(array);
     this.setState({ array });
   }
 
   render() {
+    let width = Math.ceil(800 / this.props.arraySize); // width of the array bar depends on the array size
+
     return (
       <div className="array-container">
         {this.state.array.map((value, idx) => {
@@ -78,12 +76,21 @@ class Arraybar extends Component {
               className="array-bar"
               key={idx}
               style={{
+                width: `${width}px`,
                 height: `${(((value * window.innerHeight) / 937) * 830) /
-                  1000}px`
+                  500}px`
               }}
             ></div>
           );
         })}
+
+        <div
+          className="array-bar"
+          key={"extra"}
+          style={{
+            height: `${(((500 * window.innerHeight) / 937) * 830) / 500}px`
+          }}
+        ></div>
       </div>
     );
   }

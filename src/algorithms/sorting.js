@@ -34,6 +34,10 @@ export function insertionSort(arr) {
 }
 
 // quick sort implentation
+function getRandomPivot(l, r) {
+  return l + Math.floor(Math.random() * (r - l + 1));
+}
+
 function partition(arr, l, r, pivot) {}
 
 export function quickSort(arr) {}

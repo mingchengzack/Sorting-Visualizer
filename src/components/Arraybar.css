@@ -1,9 +1,8 @@
 .array-container {
-  margin: 20px 0 0 0;
+  margin: 20px 1px 0 2px;
 }
 
 .array-bar {
-  width: 3px;
   background-color: rgb(76, 187, 159);
   display: inline-block;
   margin: 0 1px;

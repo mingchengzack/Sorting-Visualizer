@@ -20,28 +20,28 @@ const speeds = ["Fast", "Medium", "Slow"];
 class SortingVisualizer extends Component {
   constructor() {
     super();
-    this.state = {
-      curAlgorithm: "Bubble Sort",
-      curSpeed: "Fast",
-      arraySize: Math.floor(window.innerWidth / 6.4)
-    };
+    this.curAlgorithm = "Bubble Sort";
+    this.curSpeed = "Fast";
+    this.arraySize = Math.floor(window.innerWidth / 10);
   }
 
   handleChangeAlgorithm = algorithm => {
-    this.setState({ curAlgorithm: algorithm });
+    this.curAlgorithm = algorithm;
   };
 
   handleChangeSpeed = speedname => {
-    this.setState({ curSpeed: speedname });
+    this.curSpeed = speedname;
   };
 
   handleRandomGenerate = () => {
     this.arrayBar.randomGenerateArray();
   };
 
+  handleChangeArraySize = () => {};
+
   handleVisualize = () => {
     let speed = 12;
-    switch (this.state.curSpeed) {
+    switch (this.curSpeed) {
       case "Fast":
         speed = 12;
         break;
@@ -55,7 +55,7 @@ class SortingVisualizer extends Component {
         speed = 12;
         break;
     }
-    this.arrayBar.visualize(speed);
+    this.arrayBar.visualize(this.curAlgorithm, speed);
   };
 
   render() {
@@ -78,22 +78,20 @@ class SortingVisualizer extends Component {
               name={"Algorithms"}
               type={"dropdown"}
               itemList={algorithms}
-              curItem={this.state.curAlgorithm}
+              curItem={this.curAlgorithm}
               onChangeItem={this.handleChangeAlgorithm}
             />
             <Navitem
               name={"Speed"}
               type={"dropdown"}
               itemList={speeds}
-              curItem={this.state.curSpeed}
+              curItem={this.curSpeed}
               onChangeItem={this.handleChangeSpeed}
             />
           </Nav>
         </Navbar>
         <Arraybar
-          size={this.state.arraySize}
-          speed={this.state.curSpeed}
-          algorithm={this.state.curAlgorithm}
+          arraySize={this.arraySize}
           onRef={ref => (this.arrayBar = ref)}
         />
       </div>
