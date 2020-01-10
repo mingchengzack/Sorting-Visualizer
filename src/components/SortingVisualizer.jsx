@@ -2,6 +2,7 @@ import React, { Component } from "react";
 import { Navbar } from "react-bootstrap";
 import { Nav } from "react-bootstrap";
 import Navitem from "./Navitem";
+import Arraybar from "./Arraybar";
 import "./Navbar.css";
 
 const algorithms = [
@@ -19,7 +20,11 @@ const speeds = ["Fast", "Medium", "Slow"];
 class SortingVisualizer extends Component {
   constructor() {
     super();
-    this.state = { curAlgorithm: "Bubble Sort", curSpeed: "Fast" };
+    this.state = {
+      curAlgorithm: "Bubble Sort",
+      curSpeed: "Fast",
+      arraySize: Math.floor(window.innerWidth / 6.4)
+    };
   }
 
   handleChangeAlgorithm = algorithm => {
@@ -30,7 +35,9 @@ class SortingVisualizer extends Component {
     this.setState({ curSpeed: speedname });
   };
 
-  handleRandomGenerate = () => {};
+  handleRandomGenerate = () => {
+    this.arrayBar.randomGenerateArray();
+  };
 
   handleVisualize = () => {
     let speed = 12;
@@ -48,6 +55,7 @@ class SortingVisualizer extends Component {
         speed = 12;
         break;
     }
+    this.arrayBar.visualize(speed);
   };
 
   render() {
@@ -82,6 +90,12 @@ class SortingVisualizer extends Component {
             />
           </Nav>
         </Navbar>
+        <Arraybar
+          size={this.state.arraySize}
+          speed={this.state.curSpeed}
+          algorithm={this.state.curAlgorithm}
+          onRef={ref => (this.arrayBar = ref)}
+        />
       </div>
     );
   }

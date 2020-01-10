@@ -1,3 +1,4 @@
+// bubble sort implentation
 export function bubbleSort(arr) {
   const n = arr.length;
 
@@ -14,7 +15,8 @@ export function bubbleSort(arr) {
   }
 }
 
-export function insertionort(arr) {
+// insertion sort implentation
+export function insertionSort(arr) {
   const n = arr.length;
 
   // insert every element
@@ -31,10 +33,12 @@ export function insertionort(arr) {
   }
 }
 
+// quick sort implentation
 function partition(arr, l, r, pivot) {}
 
 export function quickSort(arr) {}
 
+// merge sort implentation
 function merge(arr, l, r, m) {
   const n1 = m - l + 1;
   const n2 = r - m;
@@ -88,6 +92,11 @@ export function mergeSort(arr) {
   mergeSortHelper(arr, 0, n - 1);
 }
 
+// heap sort implentation
 export function heapSort(arr) {}
+
+// radix sort implentation
 export function radixSort(arr) {}
+
+// bucket sort implentation
 export function bucketSort(arr) {}
