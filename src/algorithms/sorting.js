@@ -38,9 +38,37 @@ function getRandomPivot(l, r) {
   return l + Math.floor(Math.random() * (r - l + 1));
 }
 
-function partition(arr, l, r, pivot) {}
+function swap(arr, i, j) {
+  let temp = arr[i];
+  arr[i] = arr[j];
+  arr[j] = temp;
+}
 
-export function quickSort(arr) {}
+function partition(arr, l, r, pivot) {
+  let partitionIdx = l - 1;
+  const pivotElement = arr[pivot];
+  swap(arr, r, pivot); // swap pivot with right most elemtn;
+
+  for (let i = l; i < r; i++) {
+    if (arr[i] <= pivotElement) swap(arr, i, ++partitionIdx);
+  }
+
+  swap(arr, r, ++partitionIdx); // swap pivot back
+  return partitionIdx;
+}
+
+function quickSortHelper(arr, l, r) {
+  if (l >= r) return;
+  const pivot = getRandomPivot(l, r);
+  const partitionIdx = partition(arr, l, r, pivot);
+
+  quickSortHelper(arr, l, partitionIdx - 1);
+  quickSortHelper(arr, partitionIdx + 1, r);
+}
+
+export function quickSort(arr) {
+  quickSortHelper(arr, 0, arr.length - 1);
+}
 
 // merge sort implentation
 function merge(arr, l, r, m) {
@@ -92,8 +120,7 @@ function mergeSortHelper(arr, l, r) {
 }
 
 export function mergeSort(arr) {
-  const n = arr.length;
-  mergeSortHelper(arr, 0, n - 1);
+  mergeSortHelper(arr, 0, arr.length - 1);
 }
 
 // heap sort implentation
