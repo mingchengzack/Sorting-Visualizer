@@ -1,5 +1,6 @@
 import React, { Component } from "react";
 import Element from "./Element";
+import { animationType } from "./Element";
 import "./Arraybar.css";
 import {
   bubbleSort,
@@ -11,6 +12,9 @@ import {
   bucketSort
 } from "../algorithms/sorting";
 
+const HEIGHT = window.innerHeight;
+const WIDTH = window.innerWidth;
+
 function randomIntFromInterval(min, max) {
   return min + Math.floor(Math.random() * (max - min + 1));
 }
@@ -19,10 +23,13 @@ class Arraybar extends Component {
   constructor(props) {
     super(props);
 
+    this.state = { generate: 0 };
+
     // construct initial array
-    this.arraySize = Math.floor(window.innerWidth / 10);
+    this.arraySize = Math.floor(WIDTH / 10);
     this.width = Math.ceil(800 / this.arraySize); // width of the array bar depends on the array size
     this.array = [];
+    this.isVisualized = false;
     this.constructInitArray();
   }
 
@@ -47,17 +54,23 @@ class Arraybar extends Component {
   }
 
   randomGenerateArray() {
-    this.array = []; // reset array
+    // if (this.isVisualized) return;
+    this.arraySize = Math.floor(WIDTH / 10); // reset array size
     this.width = Math.ceil(800 / this.arraySize); // reset width
+    this.array = []; // reset array
 
     for (let i = 0; i < this.arraySize; i++) {
       this.array.push(randomIntFromInterval(5, 500));
     }
 
-    this.setArray();
+    this.setState({ generate: this.state.generate ^ 1 }, this.setArray);
   }
 
   visualize(algorithm, speed) {
+    // if (this.isVisualized) return;
+    this.isVisualized = true;
+
+    let animations = [];
     switch (algorithm) {
       case "Bubble Sort":
         bubbleSort(this.array);
@@ -69,7 +82,8 @@ class Arraybar extends Component {
         quickSort(this.array);
         break;
       case "Merge Sort":
-        mergeSort(this.array);
+        animations = mergeSort(this.array);
+        this.mergeSortAnimations(animations, speed);
         break;
       case "Heap Sort":
         heapSort(this.array);
@@ -83,7 +97,29 @@ class Arraybar extends Component {
       default:
         break;
     }
-    this.setArray();
+
+    // finish visualization
+    setTimeout(() => {
+      this.isVisualized = false;
+    }, 10 + (animations.length + 1) * speed);
+  }
+
+  mergeSortAnimations(animations, speed) {
+    console.log(animations.length);
+    for (let i = 0; i < animations.length; i++) {
+      if (i % 2 === 0) {
+        const [barOneIdx, barTwoIdx] = animations[i];
+        setTimeout(() => {
+          this[`element-${barOneIdx}`].setAnimation(animationType.COMPARISON);
+          this[`element-${barTwoIdx}`].setAnimation(animationType.COMPARISON);
+        }, i * speed);
+      } else {
+        const [barIdx, newValue] = animations[i];
+        setTimeout(() => {
+          this[`element-${barIdx}`].setElement(newValue, this.width);
+        }, i * speed);
+      }
+    }
   }
 
   render() {
@@ -104,7 +140,7 @@ class Arraybar extends Component {
           className="array-bar"
           key={"extra"}
           style={{
-            height: `${(((500 * window.innerHeight) / 937) * 830) / 500}px`
+            height: `${(((500 * HEIGHT) / 937) * 830) / 500}px`
           }}
         ></div>
       </div>

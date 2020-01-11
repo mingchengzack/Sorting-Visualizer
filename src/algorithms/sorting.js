@@ -71,7 +71,7 @@ export function quickSort(arr) {
 }
 
 // merge sort implentation
-function merge(arr, l, r, m) {
+function merge(arr, l, r, m, animations) {
   const n1 = m - l + 1;
   const n2 = r - m;
   const L = new Array(n1);
@@ -93,34 +93,43 @@ function merge(arr, l, r, m) {
 
   // merge two arrays
   while (idxL < n1 && idxR < n2) {
+    animations.push([idxL + l, idxR + m + 1]); // comparing elements at i ,j in the orignal array
     if (L[idxL] < R[idxR]) {
+      animations.push([k, L[idxL]]); // replace element at k of the original array with L[idxL]
       arr[k++] = L[idxL++];
     } else {
+      animations.push([k, R[idxR]]); // replace element at k of the original array with R[idxR];
       arr[k++] = R[idxR++];
     }
   }
 
   // add remaining elements
   while (idxL < n1) {
+    animations.push([idxL + l, idxL + l]);
+    animations.push([k, L[idxL]]); // replace element at k of the original array with L[idxL]
     arr[k++] = L[idxL++];
   }
 
   while (idxR < n2) {
+    animations.push([idxR + m + 1, idxR + m + 1]);
+    animations.push([k, R[idxR]]); // replace element at k of the original array with R[idxR];
     arr[k++] = R[idxR++];
   }
 }
 
-function mergeSortHelper(arr, l, r) {
+function mergeSortHelper(arr, l, r, animations) {
   if (l === r) return;
 
   const m = l + Math.floor((r - l) / 2);
-  mergeSortHelper(arr, l, m);
-  mergeSortHelper(arr, m + 1, r);
-  merge(arr, l, r, m);
+  mergeSortHelper(arr, l, m, animations);
+  mergeSortHelper(arr, m + 1, r, animations);
+  merge(arr, l, r, m, animations);
 }
 
 export function mergeSort(arr) {
-  mergeSortHelper(arr, 0, arr.length - 1);
+  let animations = [];
+  mergeSortHelper(arr, 0, arr.length - 1, animations);
+  return animations;
 }
 
 // heap sort implentation

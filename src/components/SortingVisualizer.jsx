@@ -39,19 +39,19 @@ class SortingVisualizer extends Component {
   handleChangeArraySize = () => {};
 
   handleVisualize = () => {
-    let speed = 12;
+    let speed = 3;
     switch (this.curSpeed) {
       case "Fast":
-        speed = 12;
+        speed = 3;
         break;
       case "Medium":
-        speed = 16;
+        speed = 8;
         break;
       case "Slow":
-        speed = 20;
+        speed = 13;
         break;
       default:
-        speed = 12;
+        speed = 3;
         break;
     }
     this.arrayBar.visualize(this.curAlgorithm, speed);
