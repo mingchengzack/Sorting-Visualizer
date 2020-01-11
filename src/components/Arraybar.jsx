@@ -27,7 +27,7 @@ class Arraybar extends Component {
 
     // construct initial array
     this.arraySize = Math.floor(WIDTH / 12);
-    this.width = Math.ceil(800 / this.arraySize) + 1; // width of the array bar depends on the array size
+    this.width = Math.ceil(900 / this.arraySize); // width of the array bar depends on the array size
     this.array = [];
     this.isVisualized = false;
     this.constructInitArray();
@@ -54,7 +54,7 @@ class Arraybar extends Component {
   }
 
   randomGenerateArray() {
-    // if (this.isVisualized) return;
+    if (this.isVisualized) return;
     this.arraySize = Math.floor(WIDTH / 10); // reset array size
     this.width = Math.ceil(800 / this.arraySize); // reset width
     this.array = []; // reset array
@@ -67,13 +67,14 @@ class Arraybar extends Component {
   }
 
   visualize(algorithm, speed) {
-    // if (this.isVisualized) return;
+    if (this.isVisualized) return;
     this.isVisualized = true;
 
     let animations = [];
     switch (algorithm) {
       case "Bubble Sort":
-        bubbleSort(this.array);
+        animations = bubbleSort(this.array);
+        this.bubbleSortAnimations(animations, speed);
         break;
       case "Insertion Sort":
         insertionSort(this.array);
@@ -102,6 +103,36 @@ class Arraybar extends Component {
     setTimeout(() => {
       this.isVisualized = false;
     }, 10 + (animations.length + 1) * speed);
+  }
+
+  bubbleSortAnimations(animations, speed) {
+    for (let i = 0; i < animations.length; i++) {
+      if (i % 4 === 0) {
+        const [barOneIdx, barTwoIdx] = animations[i];
+        setTimeout(() => {
+          this[`element-${barOneIdx}`].setAnimation(animationType.RED);
+          this[`element-${barTwoIdx}`].setAnimation(animationType.RED);
+        }, i * speed);
+      } else if (i % 4 === 1) {
+        const [barOneIdx, barTwoIdx] = animations[i];
+        setTimeout(() => {
+          this[`element-${barOneIdx}`].setAnimation(animationType.BLUE);
+          this[`element-${barTwoIdx}`].setAnimation(animationType.BLUE);
+        }, i * speed);
+      } else if (i % 4 === 2) {
+        const [barOneIdx, barTwoIdx] = animations[i];
+        setTimeout(() => {
+          this[`element-${barOneIdx}`].setAnimation(animationType.DEFAULT);
+          this[`element-${barTwoIdx}`].setAnimation(animationType.DEFAULT);
+        }, i * speed);
+      } else {
+        const [barOneIdx, barTwoIdx, barOneValue, barTwoValue] = animations[i];
+        setTimeout(() => {
+          this[`element-${barOneIdx}`].setElement(barTwoValue, this.width);
+          this[`element-${barTwoIdx}`].setElement(barOneValue, this.width);
+        }, i * speed);
+      }
+    }
   }
 
   mergeSortAnimations(animations, speed) {

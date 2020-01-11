@@ -1,18 +1,26 @@
 // bubble sort implentation
 export function bubbleSort(arr) {
   const n = arr.length;
+  let animations = [];
 
   // bubble the maximum to the end
   for (let i = 0; i < n; i++) {
     for (let j = 0; j < n - i - 1; j++) {
+      // for comparing animation
+      animations.push([j, j + 1]);
+      animations.push([j, j + 1]);
+      animations.push([j, j + 1]);
       if (arr[j] > arr[j + 1]) {
         // swap
-        let temp = arr[j];
-        arr[j] = arr[j + 1];
-        arr[j + 1] = temp;
+        animations.push([j, j + 1, arr[j], arr[j + 1]]); // for swapping animation
+        swap(arr, j, j + 1);
+      } else {
+        animations.push([j, j + 1, arr[j + 1], arr[j]]); // not swapping
       }
     }
   }
+
+  return animations;
 }
 
 // insertion sort implentation
