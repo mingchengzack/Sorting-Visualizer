@@ -22,7 +22,6 @@ class SortingVisualizer extends Component {
     super();
     this.curAlgorithm = "Bubble Sort";
     this.curSpeed = "Fast";
-    this.arraySize = Math.floor(window.innerWidth / 10);
   }
 
   handleChangeAlgorithm = algorithm => {
@@ -90,10 +89,7 @@ class SortingVisualizer extends Component {
             />
           </Nav>
         </Navbar>
-        <Arraybar
-          arraySize={this.arraySize}
-          onRef={ref => (this.arrayBar = ref)}
-        />
+        <Arraybar onRef={ref => (this.arrayBar = ref)} />
       </div>
     );
   }
