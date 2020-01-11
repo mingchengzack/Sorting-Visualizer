@@ -26,6 +26,7 @@ export function bubbleSort(arr) {
 // insertion sort implentation
 export function insertionSort(arr) {
   const n = arr.length;
+  let animations = [];
 
   // insert every element
   for (let i = 1; i < n; i++) {
@@ -34,11 +35,28 @@ export function insertionSort(arr) {
 
     // find the spot to insert in sorted array
     for (j = i; j > 0 && arr[j - 1] > temp; j--) {
+      // for comparing animation
+      animations.push(j);
+      animations.push(j);
+      animations.push(j);
+
+      // for overwriting animation
+      animations.push([j, arr[j - 1]]);
       arr[j] = arr[j - 1];
     }
 
+    // for comparing animation
+    animations.push(j);
+    animations.push(j);
+    animations.push(j);
+
+    // for overwriting animation
+    animations.push([j, temp]);
+
     arr[j] = temp;
   }
+
+  return animations;
 }
 
 // quick sort implentation

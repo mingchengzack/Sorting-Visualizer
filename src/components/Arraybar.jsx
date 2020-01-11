@@ -77,7 +77,8 @@ class Arraybar extends Component {
         this.bubbleSortAnimations(animations, speed);
         break;
       case "Insertion Sort":
-        insertionSort(this.array);
+        animations = insertionSort(this.array);
+        this.insertionSortAnimations(animations, speed);
         break;
       case "Quick Sort":
         quickSort(this.array);
@@ -107,29 +108,49 @@ class Arraybar extends Component {
 
   bubbleSortAnimations(animations, speed) {
     for (let i = 0; i < animations.length; i++) {
-      if (i % 4 === 0) {
-        const [barOneIdx, barTwoIdx] = animations[i];
-        setTimeout(() => {
-          this[`element-${barOneIdx}`].setAnimation(animationType.RED);
-          this[`element-${barTwoIdx}`].setAnimation(animationType.RED);
-        }, i * speed);
-      } else if (i % 4 === 1) {
-        const [barOneIdx, barTwoIdx] = animations[i];
-        setTimeout(() => {
-          this[`element-${barOneIdx}`].setAnimation(animationType.BLUE);
-          this[`element-${barTwoIdx}`].setAnimation(animationType.BLUE);
-        }, i * speed);
-      } else if (i % 4 === 2) {
-        const [barOneIdx, barTwoIdx] = animations[i];
-        setTimeout(() => {
-          this[`element-${barOneIdx}`].setAnimation(animationType.DEFAULT);
-          this[`element-${barTwoIdx}`].setAnimation(animationType.DEFAULT);
-        }, i * speed);
-      } else {
+      if (i % 4 === 3) {
+        // swapping
         const [barOneIdx, barTwoIdx, barOneValue, barTwoValue] = animations[i];
         setTimeout(() => {
           this[`element-${barOneIdx}`].setElement(barTwoValue, this.width);
           this[`element-${barTwoIdx}`].setElement(barOneValue, this.width);
+        }, i * speed);
+      } else {
+        // comparing
+        const [barOneIdx, barTwoIdx] = animations[i];
+        const color =
+          i % 4 === 0
+            ? animationType.RED
+            : i % 4 === 1
+            ? animationType.BLUE
+            : animationType.DEFAULT;
+        setTimeout(() => {
+          this[`element-${barOneIdx}`].setAnimation(color);
+          this[`element-${barTwoIdx}`].setAnimation(color);
+        }, i * speed);
+      }
+    }
+  }
+
+  insertionSortAnimations(animations, speed) {
+    for (let i = 0; i < animations.length; i++) {
+      if (i % 4 === 3) {
+        // overwriting
+        const [barIdx, newValue] = animations[i];
+        setTimeout(() => {
+          this[`element-${barIdx}`].setElement(newValue, this.width);
+        }, i * speed);
+      } else {
+        // comparing
+        const barIdx = animations[i];
+        const color =
+          i % 4 === 0
+            ? animationType.RED
+            : i % 4 === 1
+            ? animationType.BLUE
+            : animationType.DEFAULT;
+        setTimeout(() => {
+          this[`element-${barIdx}`].setAnimation(color);
         }, i * speed);
       }
     }
@@ -137,28 +158,24 @@ class Arraybar extends Component {
 
   mergeSortAnimations(animations, speed) {
     for (let i = 0; i < animations.length; i++) {
-      if (i % 4 === 0) {
-        const [barOneIdx, barTwoIdx] = animations[i];
-        setTimeout(() => {
-          this[`element-${barOneIdx}`].setAnimation(animationType.RED);
-          this[`element-${barTwoIdx}`].setAnimation(animationType.RED);
-        }, i * speed);
-      } else if (i % 4 === 1) {
-        const [barOneIdx, barTwoIdx] = animations[i];
-        setTimeout(() => {
-          this[`element-${barOneIdx}`].setAnimation(animationType.BLUE);
-          this[`element-${barTwoIdx}`].setAnimation(animationType.BLUE);
-        }, i * speed);
-      } else if (i % 4 === 2) {
-        const [barOneIdx, barTwoIdx] = animations[i];
-        setTimeout(() => {
-          this[`element-${barOneIdx}`].setAnimation(animationType.DEFAULT);
-          this[`element-${barTwoIdx}`].setAnimation(animationType.DEFAULT);
-        }, i * speed);
-      } else {
+      if (i % 4 === 3) {
+        // overwriting
         const [barIdx, newValue] = animations[i];
         setTimeout(() => {
           this[`element-${barIdx}`].setElement(newValue, this.width);
+        }, i * speed);
+      } else {
+        // comparing
+        const [barOneIdx, barTwoIdx] = animations[i];
+        const color =
+          i % 4 === 0
+            ? animationType.RED
+            : i % 4 === 1
+            ? animationType.BLUE
+            : animationType.DEFAULT;
+        setTimeout(() => {
+          this[`element-${barOneIdx}`].setAnimation(color);
+          this[`element-${barTwoIdx}`].setAnimation(color);
         }, i * speed);
       }
     }
