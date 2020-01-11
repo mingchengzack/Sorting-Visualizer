@@ -39,16 +39,16 @@ class SortingVisualizer extends Component {
   handleChangeArraySize = () => {};
 
   handleVisualize = () => {
-    let speed = 3;
+    let speed = 5;
     switch (this.curSpeed) {
       case "Fast":
-        speed = 3;
+        speed = 5;
         break;
       case "Medium":
-        speed = 8;
+        speed = 7;
         break;
       case "Slow":
-        speed = 13;
+        speed = 9;
         break;
       default:
         speed = 3;

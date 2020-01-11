@@ -94,6 +94,9 @@ function merge(arr, l, r, m, animations) {
   // merge two arrays
   while (idxL < n1 && idxR < n2) {
     animations.push([idxL + l, idxR + m + 1]); // comparing elements at i ,j in the orignal array
+    animations.push([idxL + l, idxR + m + 1]); // comparing elements at i ,j in the orignal array
+    animations.push([idxL + l, idxR + m + 1]); // comparing elements at i ,j in the orignal array
+
     if (L[idxL] < R[idxR]) {
       animations.push([k, L[idxL]]); // replace element at k of the original array with L[idxL]
       arr[k++] = L[idxL++];
@@ -106,11 +109,15 @@ function merge(arr, l, r, m, animations) {
   // add remaining elements
   while (idxL < n1) {
     animations.push([idxL + l, idxL + l]);
+    animations.push([idxL + l, idxL + l]);
+    animations.push([idxL + l, idxL + l]);
     animations.push([k, L[idxL]]); // replace element at k of the original array with L[idxL]
     arr[k++] = L[idxL++];
   }
 
   while (idxR < n2) {
+    animations.push([idxR + m + 1, idxR + m + 1]);
+    animations.push([idxR + m + 1, idxR + m + 1]);
     animations.push([idxR + m + 1, idxR + m + 1]);
     animations.push([k, R[idxR]]); // replace element at k of the original array with R[idxR];
     arr[k++] = R[idxR++];

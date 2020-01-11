@@ -26,8 +26,8 @@ class Arraybar extends Component {
     this.state = { generate: 0 };
 
     // construct initial array
-    this.arraySize = Math.floor(WIDTH / 10);
-    this.width = Math.ceil(800 / this.arraySize); // width of the array bar depends on the array size
+    this.arraySize = Math.floor(WIDTH / 12);
+    this.width = Math.ceil(800 / this.arraySize) + 1; // width of the array bar depends on the array size
     this.array = [];
     this.isVisualized = false;
     this.constructInitArray();
@@ -105,13 +105,24 @@ class Arraybar extends Component {
   }
 
   mergeSortAnimations(animations, speed) {
-    console.log(animations.length);
     for (let i = 0; i < animations.length; i++) {
-      if (i % 2 === 0) {
+      if (i % 4 === 0) {
         const [barOneIdx, barTwoIdx] = animations[i];
         setTimeout(() => {
-          this[`element-${barOneIdx}`].setAnimation(animationType.COMPARISON);
-          this[`element-${barTwoIdx}`].setAnimation(animationType.COMPARISON);
+          this[`element-${barOneIdx}`].setAnimation(animationType.RED);
+          this[`element-${barTwoIdx}`].setAnimation(animationType.RED);
+        }, i * speed);
+      } else if (i % 4 === 1) {
+        const [barOneIdx, barTwoIdx] = animations[i];
+        setTimeout(() => {
+          this[`element-${barOneIdx}`].setAnimation(animationType.BLUE);
+          this[`element-${barTwoIdx}`].setAnimation(animationType.BLUE);
+        }, i * speed);
+      } else if (i % 4 === 2) {
+        const [barOneIdx, barTwoIdx] = animations[i];
+        setTimeout(() => {
+          this[`element-${barOneIdx}`].setAnimation(animationType.DEFAULT);
+          this[`element-${barTwoIdx}`].setAnimation(animationType.DEFAULT);
         }, i * speed);
       } else {
         const [barIdx, newValue] = animations[i];

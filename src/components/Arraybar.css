@@ -8,6 +8,10 @@
   margin: 0 1px;
 }
 
-.comparison {
-  background-color: rgb(139, 56, 56);
+.red {
+  background-color: rgb(252, 4, 4);
+}
+
+.blue {
+  background-color: rgb(16, 0, 247);
 }

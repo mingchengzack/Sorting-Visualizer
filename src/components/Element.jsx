@@ -32,7 +32,11 @@ class Element extends Component {
   render() {
     let { width, value, animation } = this.state;
     let animationname =
-      animation === animationType.COMPARISON ? "comparison" : "";
+      animation === animationType.RED
+        ? "red"
+        : animation === animationType.BLUE
+        ? "blue"
+        : "";
     return (
       <div
         className={`array-bar ${animationname}`}
@@ -49,5 +53,6 @@ export default Element;
 
 export const animationType = {
   DEFAULT: 1,
-  COMPARISON: 2
+  RED: 2,
+  BLUE: 3
 };
