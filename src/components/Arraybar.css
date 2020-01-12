@@ -5,7 +5,8 @@
 .array-bar {
   background-color: rgb(76, 187, 159);
   display: inline-block;
-  margin: 0 1px;
+  margin-left: 1px;
+  margin-right: 1px;
 }
 
 .red {

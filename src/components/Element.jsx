@@ -46,7 +46,7 @@ class Element extends Component {
         className={`array-bar ${animationname}`}
         style={{
           width: `${width}px`,
-          height: `${(((value * HEIGHT) / 937) * 830) / 500}px`
+          height: `${(((value * HEIGHT) / 937) * 790) / 250}px`
         }}
       ></div>
     );

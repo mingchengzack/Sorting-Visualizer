@@ -43,7 +43,7 @@ class Arraybar extends Component {
 
   constructInitArray() {
     for (let i = 0; i < this.arraySize; i++) {
-      this.array.push(randomIntFromInterval(5, 500));
+      this.array.push(randomIntFromInterval(10, 250));
     }
   }
 
@@ -61,7 +61,7 @@ class Arraybar extends Component {
     this.array = []; // reset array
 
     for (let i = 0; i < this.arraySize; i++) {
-      this.array.push(randomIntFromInterval(5, 500));
+      this.array.push(randomIntFromInterval(10, 250));
     }
 
     this.setState({ generate: this.state.generate ^ 1 }, this.setArray);
@@ -266,7 +266,7 @@ class Arraybar extends Component {
           className="array-bar"
           key={"extra"}
           style={{
-            height: `${(((500 * HEIGHT) / 937) * 830) / 500}px`
+            height: `${(((250 * HEIGHT) / 937) * 790) / 250}px`
           }}
         ></div>
       </div>
