@@ -12,13 +12,19 @@ export function bubbleSort(arr) {
       animations.push([j, j + 1]);
       if (arr[j] > arr[j + 1]) {
         // swap
-        animations.push([j, j + 1, arr[j], arr[j + 1]]); // for swapping animation
+        animations.push([j, j + 1, arr[j], arr[j + 1], j + 1 === n - i - 1]); // for swapping animation
         swap(arr, j, j + 1);
       } else {
-        animations.push([j, j + 1, arr[j + 1], arr[j]]); // not swapping
+        animations.push([j, j + 1, arr[j + 1], arr[j], j + 1 === n - i - 1]); // not swapping
       }
     }
   }
+
+  // final animation
+  animations.push([0, 0]);
+  animations.push([0, 0]);
+  animations.push([0, 0]);
+  animations.push([0, 0, arr[0], arr[0], true]);
 
   return animations;
 }
@@ -41,7 +47,7 @@ export function insertionSort(arr) {
       animations.push(j);
 
       // for overwriting animation
-      animations.push([j, arr[j - 1]]);
+      animations.push([j, arr[j - 1], i === n - 1]);
       arr[j] = arr[j - 1];
     }
 
@@ -51,9 +57,20 @@ export function insertionSort(arr) {
     animations.push(j);
 
     // for overwriting animation
-    animations.push([j, temp]);
+    animations.push([j, temp, i === n - 1]);
 
     arr[j] = temp;
+
+    // sorted animations
+    for (let k = j - 1; k >= 0; k--) {
+      // for comparing animation
+      animations.push(k);
+      animations.push(k);
+      animations.push(k);
+
+      // for overwriting animation
+      animations.push([k, arr[k], i === n - 1]);
+    }
   }
 
   return animations;
@@ -70,30 +87,50 @@ function swap(arr, i, j) {
   arr[j] = temp;
 }
 
-function partition(arr, l, r, pivot) {
+function partition(arr, l, r, pivot, animations) {
   let partitionIdx = l - 1;
   const pivotElement = arr[pivot];
+
+  animations.push([r, pivot]);
+  animations.push([r, pivot]);
+  animations.push([r, pivot]);
+  animations.push([r, pivot, arr[r], arr[pivot], 2]);
   swap(arr, r, pivot); // swap pivot with right most elemtn;
 
   for (let i = l; i < r; i++) {
-    if (arr[i] <= pivotElement) swap(arr, i, ++partitionIdx);
+    animations.push([i, partitionIdx + 1]);
+    animations.push([i, partitionIdx + 1]);
+    animations.push([i, partitionIdx + 1]);
+
+    if (arr[i] <= pivotElement) {
+      animations.push([i, partitionIdx + 1, arr[i], arr[partitionIdx + 1], 3]);
+      swap(arr, i, ++partitionIdx);
+    } else {
+      animations.push([i, partitionIdx + 1, arr[partitionIdx + 1], arr[i], 3]);
+    }
   }
 
+  animations.push([r, partitionIdx + 1]);
+  animations.push([r, partitionIdx + 1]);
+  animations.push([r, partitionIdx + 1]);
+  animations.push([r, partitionIdx + 1, arr[r], arr[partitionIdx + 1], 1]);
   swap(arr, r, ++partitionIdx); // swap pivot back
   return partitionIdx;
 }
 
-function quickSortHelper(arr, l, r) {
-  if (l >= r) return;
+function quickSortHelper(arr, l, r, animations) {
+  if (l > r) return;
   const pivot = getRandomPivot(l, r);
-  const partitionIdx = partition(arr, l, r, pivot);
+  const partitionIdx = partition(arr, l, r, pivot, animations);
 
-  quickSortHelper(arr, l, partitionIdx - 1);
-  quickSortHelper(arr, partitionIdx + 1, r);
+  quickSortHelper(arr, partitionIdx + 1, r, animations);
+  quickSortHelper(arr, l, partitionIdx - 1, animations);
 }
 
 export function quickSort(arr) {
-  quickSortHelper(arr, 0, arr.length - 1);
+  let animations = [];
+  quickSortHelper(arr, 0, arr.length - 1, animations);
+  return animations;
 }
 
 // merge sort implentation
@@ -116,6 +153,7 @@ function merge(arr, l, r, m, animations) {
   let k = l;
   let idxL = 0; // index for left array
   let idxR = 0; // index for right array
+  const isSorted = l === 0 && r === arr.length - 1;
 
   // merge two arrays
   while (idxL < n1 && idxR < n2) {
@@ -124,10 +162,10 @@ function merge(arr, l, r, m, animations) {
     animations.push([idxL + l, idxR + m + 1]); // comparing elements at i ,j in the orignal array
 
     if (L[idxL] < R[idxR]) {
-      animations.push([k, L[idxL]]); // replace element at k of the original array with L[idxL]
+      animations.push([k, L[idxL], isSorted, idxL + l]); // replace element at k of the original array with L[idxL]
       arr[k++] = L[idxL++];
     } else {
-      animations.push([k, R[idxR]]); // replace element at k of the original array with R[idxR];
+      animations.push([k, R[idxR], false, k]); // replace element at k of the original array with R[idxR];
       arr[k++] = R[idxR++];
     }
   }
@@ -137,7 +175,7 @@ function merge(arr, l, r, m, animations) {
     animations.push([idxL + l, idxL + l]);
     animations.push([idxL + l, idxL + l]);
     animations.push([idxL + l, idxL + l]);
-    animations.push([k, L[idxL]]); // replace element at k of the original array with L[idxL]
+    animations.push([k, L[idxL], isSorted, idxL + l]); // replace element at k of the original array with L[idxL]
     arr[k++] = L[idxL++];
   }
 
@@ -145,8 +183,18 @@ function merge(arr, l, r, m, animations) {
     animations.push([idxR + m + 1, idxR + m + 1]);
     animations.push([idxR + m + 1, idxR + m + 1]);
     animations.push([idxR + m + 1, idxR + m + 1]);
-    animations.push([k, R[idxR]]); // replace element at k of the original array with R[idxR];
+    animations.push([k, R[idxR], false, k]); // replace element at k of the original array with R[idxR];
     arr[k++] = R[idxR++];
+  }
+
+  // sorted animations
+  if (isSorted) {
+    for (let i = idxL + l; i <= r; i++) {
+      animations.push([i, i]);
+      animations.push([i, i]);
+      animations.push([i, i]);
+      animations.push([i, arr[i], isSorted, i]);
+    }
   }
 }
 

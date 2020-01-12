@@ -36,6 +36,10 @@ class Element extends Component {
         ? "red"
         : animation === animationType.BLUE
         ? "blue"
+        : animation === animationType.YELLOW
+        ? "yellow"
+        : animation === animationType.PURPLE
+        ? "purple"
         : "";
     return (
       <div
@@ -54,5 +58,7 @@ export default Element;
 export const animationType = {
   DEFAULT: 1,
   RED: 2,
-  BLUE: 3
+  BLUE: 3,
+  YELLOW: 4,
+  PURPLE: 5
 };
