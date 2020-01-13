@@ -98,13 +98,16 @@ class Arraybar extends Component {
         this.mergeSortAnimations(animations, speed);
         break;
       case "Heap Sort":
-        heapSort(this.array);
+        animations = heapSort(this.array);
+        this.heapSortAnimations(animations, speed);
         break;
       case "Radix Sort":
-        radixSort(this.array);
+        animations = radixSort(this.array);
+        this.radixSortAnimations(animations, speed);
         break;
       case "Bucket Sort":
-        bucketSort(this.array);
+        animations = bucketSort(this.array);
+        this.bucketSortAnimations(animations, speed);
         break;
       default:
         break;
@@ -114,10 +117,6 @@ class Arraybar extends Component {
     setTimeout(() => {
       this.isVisualized = false;
     }, 310 + animations.length * speed);
-  }
-
-  sortedAnimations(speed) {
-    for (let i = 0; i < this.array.length; i++) {}
   }
 
   bubbleSortAnimations(animations, speed) {
@@ -247,6 +246,12 @@ class Arraybar extends Component {
       }
     }
   }
+
+  heapSortAnimations(animations, speed) {}
+
+  radixSortAnimations(animations, speed) {}
+
+  bucketSortAnimations(animations, speed) {}
 
   render() {
     return (
