@@ -4,7 +4,7 @@
 }
 
 .navbar-custom {
-  background-color: rgb(66, 91, 146);
+  background-color: rgb(48, 68, 112);
   height: 95px;
 }
 
@@ -15,17 +15,17 @@
 }
 
 .navbar-brand:hover {
-  color: #b8b521;
+  color: rgb(76, 187, 159);
 }
 
 #button {
-  background-color: rgb(66, 91, 146);
-  border-color: rgb(66, 91, 146);
+  background-color: rgb(48, 68, 112);
+  border-color: rgb(48, 68, 112);
   font-family: "Roboto";
 }
 
 #button:hover {
-  color: #b8b521;
+  color: rgb(76, 187, 159);
 }
 
 #button:focus {
@@ -33,13 +33,13 @@
 }
 
 #dropdown-toggle {
-  background-color: rgb(66, 91, 146);
-  border-color: rgb(66, 91, 146);
+  background-color: rgb(48, 68, 112);
+  border-color: rgb(48, 68, 112);
   font-family: "Roboto";
 }
 
 #dropdown-toggle:hover {
-  color: #b8b521;
+  color: rgb(76, 187, 159);
 }
 
 #dropdown-toggle:focus {
@@ -51,5 +51,5 @@
 }
 
 #dropdown-item:hover {
-  background-color: #b8b521;
+  background-color: rgb(76, 187, 159);
 }

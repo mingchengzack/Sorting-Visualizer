@@ -26,7 +26,7 @@ class Arraybar extends Component {
     this.state = { generate: 0 };
 
     // construct initial array
-    this.arraySize = Math.floor(WIDTH / 36);
+    this.arraySize = Math.floor(WIDTH / 25.6); // reset array size
     this.width = Math.ceil(900 / this.arraySize); // width of the array bar depends on the array size
     this.array = [];
     this.isVisualized = false;
@@ -56,7 +56,6 @@ class Arraybar extends Component {
 
   randomGenerateArray() {
     if (this.isVisualized) return;
-    this.arraySize = Math.floor(WIDTH / 36); // reset array size
     this.width = Math.ceil(900 / this.arraySize); // reset width
     this.array = []; // reset array
 
