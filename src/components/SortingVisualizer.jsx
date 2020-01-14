@@ -25,7 +25,7 @@ const PrettoSlider = withStyles({
     width: 160,
     marginTop: 2,
     marginRight: 32,
-    marginLeft: -10
+    marginLeft: -15
   },
   thumb: {
     height: 24,
@@ -122,11 +122,6 @@ class SortingVisualizer extends Component {
               onClick={this.handleVisualize}
             />
             <Navitem
-              name={"Random Generate"}
-              type={"button"}
-              onClick={this.handleRandomGenerate}
-            />
-            <Navitem
               name={"Algorithms"}
               type={"dropdown"}
               itemList={algorithms}
@@ -134,7 +129,7 @@ class SortingVisualizer extends Component {
               onChangeItem={this.handleChangeAlgorithm}
             />
             <Navitem
-              name={"Array Size"}
+              name={"Random Generate"}
               type={"button"}
               onClick={this.handleRandomGenerate}
             />
