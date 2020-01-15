@@ -1,3 +1,9 @@
+function swap(arr, i, j) {
+  let temp = arr[i];
+  arr[i] = arr[j];
+  arr[j] = temp;
+}
+
 // bubble sort implentation
 export function bubbleSort(arr) {
   const n = arr.length;
@@ -79,12 +85,6 @@ export function insertionSort(arr) {
 // quick sort implentation
 function getRandomPivot(l, r) {
   return l + Math.floor(Math.random() * (r - l + 1));
-}
-
-function swap(arr, i, j) {
-  let temp = arr[i];
-  arr[i] = arr[j];
-  arr[j] = temp;
 }
 
 function partition(arr, l, r, pivot, animations) {
@@ -214,7 +214,54 @@ export function mergeSort(arr) {
 }
 
 // heap sort implentation
-export function heapSort(arr) {}
+function heapify(arr, n, i, animations) {
+  if (n === 0) return;
+  let largestIdx = i;
+  let l = 2 * i + 1; // left child
+  let r = 2 * i + 2; // right child
+
+  if (l < n && arr[l] > arr[largestIdx]) largestIdx = l; // heapify left child
+  if (r < n && arr[r] > arr[largestIdx]) largestIdx = r; // heapify right child
+
+  animations.push([i, largestIdx]);
+  animations.push([i, largestIdx]);
+  animations.push([i, largestIdx]);
+  // if more heapify needed
+  if (largestIdx !== i) {
+    // swap
+    animations.push([i, largestIdx, arr[i], arr[largestIdx], false]);
+    swap(arr, i, largestIdx);
+
+    // heapify affectd subtrees
+    heapify(arr, n, largestIdx, animations);
+  } else {
+    animations.push([i, largestIdx, arr[largestIdx], arr[i], false]);
+  }
+}
+
+export function heapSort(arr) {
+  const n = arr.length;
+  let animations = [];
+
+  // build max heap
+  for (let i = Math.floor(n / 2) - 1; i >= 0; i--)
+    heapify(arr, n, i, animations);
+
+  // extract sorted element
+  for (let i = n - 1; i >= 0; i--) {
+    // swap to the end
+    animations.push([0, i]);
+    animations.push([0, i]);
+    animations.push([0, i]);
+    animations.push([0, i, arr[0], arr[i], true]);
+    swap(arr, 0, i);
+
+    // call max heapify on the reduced heap
+    heapify(arr, i, 0, animations);
+  }
+
+  return animations;
+}
 
 // radix sort implentation
 export function radixSort(arr) {}

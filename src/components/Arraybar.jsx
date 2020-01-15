@@ -26,8 +26,8 @@ class Arraybar extends Component {
     this.state = { generate: 0 };
 
     // construct initial array
-    this.arraySize = Math.floor(WIDTH / 25.6); // reset array size
-    this.width = Math.ceil(900 / this.arraySize); // width of the array bar depends on the array size
+    this.arraySize = 75; // default array size
+    this.width = Math.ceil((900 / this.arraySize / 1920) * WIDTH); // width of the array bar depends on the array size
     this.array = [];
     this.isVisualized = false;
     this.constructInitArray();
@@ -56,7 +56,7 @@ class Arraybar extends Component {
 
   randomGenerateArray() {
     if (this.isVisualized) return;
-    this.width = Math.ceil(900 / this.arraySize); // reset width
+    this.width = Math.ceil((900 / this.arraySize / 1920) * WIDTH); // reset width
     this.array = []; // reset array
 
     for (let i = 0; i < this.arraySize; i++) {
@@ -132,9 +132,8 @@ class Arraybar extends Component {
         setTimeout(() => {
           this[`element-${barOneIdx}`].setElement(barTwoValue, this.width);
           this[`element-${barTwoIdx}`].setElement(barOneValue, this.width);
-          if (isSorted) {
+          if (isSorted)
             this[`element-${barTwoIdx}`].setAnimation(animationType.PURPLE);
-          }
         }, 300 + i * speed);
       } else {
         // comparing
@@ -160,9 +159,8 @@ class Arraybar extends Component {
         const [barIdx, newValue, isSorted] = animations[i];
         setTimeout(() => {
           this[`element-${barIdx}`].setElement(newValue, this.width);
-          if (isSorted) {
+          if (isSorted)
             this[`element-${barIdx}`].setAnimation(animationType.PURPLE);
-          }
         }, 300 + i * speed);
       } else {
         // comparing
@@ -246,7 +244,39 @@ class Arraybar extends Component {
     }
   }
 
-  heapSortAnimations(animations, speed) {}
+  heapSortAnimations(animations, speed) {
+    for (let i = 0; i < animations.length; i++) {
+      if (i % 4 === 3) {
+        // swapping
+        const [
+          barOneIdx,
+          barTwoIdx,
+          barOneValue,
+          barTwoValue,
+          isSorted
+        ] = animations[i];
+        setTimeout(() => {
+          this[`element-${barOneIdx}`].setElement(barTwoValue, this.width);
+          this[`element-${barTwoIdx}`].setElement(barOneValue, this.width);
+          if (isSorted)
+            this[`element-${barTwoIdx}`].setAnimation(animationType.PURPLE);
+        }, 300 + i * speed);
+      } else {
+        // comparing
+        const [barOneIdx, barTwoIdx] = animations[i];
+        const color =
+          i % 4 === 0
+            ? animationType.RED
+            : i % 4 === 1
+            ? animationType.BLUE
+            : animationType.DEFAULT;
+        setTimeout(() => {
+          this[`element-${barOneIdx}`].setAnimation(color);
+          this[`element-${barTwoIdx}`].setAnimation(color);
+        }, 300 + i * speed);
+      }
+    }
+  }
 
   radixSortAnimations(animations, speed) {}
 
