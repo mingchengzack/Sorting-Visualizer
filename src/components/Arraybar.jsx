@@ -101,7 +101,8 @@ class Arraybar extends Component {
         this.heapSortAnimations(animations, speed);
         break;
       case "Radix Sort":
-        animations = radixSort(this.array);
+        const radix = 4;
+        animations = radixSort(this.array, radix);
         this.radixSortAnimations(animations, speed);
         break;
       case "Bucket Sort":
@@ -278,7 +279,32 @@ class Arraybar extends Component {
     }
   }
 
-  radixSortAnimations(animations, speed) {}
+  radixSortAnimations(animations, speed) {
+    for (let i = 0; i < animations.length; i++) {
+      if (i % 4 === 3) {
+        // overwriting
+        const [barIdx, newValue] = animations[i];
+        setTimeout(() => {
+          this[`element-${barIdx}`].setElement(newValue, this.width);
+        }, 300 + i * speed);
+      } else {
+        // comparing
+        const [barIdx, bucketColor] = animations[i];
+        let color =
+          i % 4 === 0
+            ? animationType.RED
+            : i % 4 === 1
+            ? animationType.BLUE
+            : animationType.DEFAULT;
+        if (bucketColor === 1) color = animationType.YELLOW;
+        else if (bucketColor === 2) color = animationType.DEFAULT;
+        else if (bucketColor === 3) color = animationType.PURPLE;
+        setTimeout(() => {
+          this[`element-${barIdx}`].setAnimation(color);
+        }, 300 + i * speed);
+      }
+    }
+  }
 
   bucketSortAnimations(animations, speed) {}
 
