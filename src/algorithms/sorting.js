@@ -264,7 +264,7 @@ export function heapSort(arr) {
 }
 
 // radix sort implentation
-function countSort(arr, n, minValue, exp, radix, animations) {
+function countSort(arr, n, minValue, exp, radix, animations, sorted) {
   let sortedArr = new Array(n);
   let buckets = new Array(radix);
   sortedArr.fill(0);
@@ -274,7 +274,6 @@ function countSort(arr, n, minValue, exp, radix, animations) {
   // count occurences of digit of arr[i]
   for (let i = 0; i < n; i++) {
     const bucketIdx = Math.floor((arr[i] - minValue) / exp) % radix;
-    if (buckets[bucketIdx] === 0) firstBuckets.push(i);
 
     // linearly scan for buckets
     animations.push([i, 0]);
@@ -284,16 +283,17 @@ function countSort(arr, n, minValue, exp, radix, animations) {
     buckets[bucketIdx]++;
   }
 
-  // mark first bucket's element as yellow
-  for (let i of firstBuckets) {
-    animations.push([i, 1]);
-    animations.push([i, 1]);
-    animations.push([i, 1]);
-    animations.push([i, arr[i]]);
-  }
-
   // change count[i] so that count[i] now contains actual position
-  for (let i = 1; i < 10; i++) buckets[i] += buckets[i - 1];
+  for (let i = 1; i < radix; i++) buckets[i] += buckets[i - 1];
+
+  // mark first bucket's element as yellow
+  for (let i of buckets) {
+    firstBuckets.push(i - 1);
+    animations.push([i - 1, 1]);
+    animations.push([i - 1, 1]);
+    animations.push([i - 1, 1]);
+    animations.push([i - 1, arr[i - 1]]);
+  }
 
   // build the shadow array
   for (let i = n - 1; i >= 0; i--) {
@@ -303,26 +303,16 @@ function countSort(arr, n, minValue, exp, radix, animations) {
 
   // copy sorted array;
   for (let i = 0; i < n; i++) {
-    if (arr[i] !== sortedArr[i]) {
-      const bucketColor = firstBuckets.includes(i) ? 1 : 0;
-      animations.push([i, bucketColor]);
-      animations.push([i, bucketColor]);
-      animations.push([i, bucketColor]);
-      animations.push([i, sortedArr[i]]);
-    }
+    const color = sorted ? 3 : 2;
+    animations.push([i, color]);
+    animations.push([i, color]);
+    animations.push([i, color]);
+    animations.push([i, sortedArr[i]]);
     arr[i] = sortedArr[i];
-  }
-
-  // mark first bucket's element as original
-  for (let i of firstBuckets) {
-    animations.push([i, 2]);
-    animations.push([i, 2]);
-    animations.push([i, 2]);
-    animations.push([i, arr[i]]);
   }
 }
 
-export function radixSort(arr, radix) {
+export function radixSort(arr, radix, sorted) {
   let animations = [];
   const n = arr.length;
 
@@ -336,16 +326,24 @@ export function radixSort(arr, radix) {
 
   // repeated counting sort for each digit
   for (let exp = 1; (maxValue - minValue) / exp >= 1; exp *= radix)
-    countSort(arr, n, minValue, exp, radix, animations);
+    countSort(
+      arr,
+      n,
+      minValue,
+      exp,
+      radix,
+      animations,
+      (maxValue - minValue) / (exp * radix) < 1
+    );
 
-  // sorted animations
-  for (let i = 0; i < n; i++) {
-    // for comparing animation
-    animations.push([i, 3]);
-    animations.push([i, 3]);
-    animations.push([i, 3]);
-    animations.push([i, arr[i]]);
-  }
+  // // sorted animations
+  // for (let i = 0; i < n; i++) {
+  //   // for comparing animation
+  //   animations.push([i, 3]);
+  //   animations.push([i, 3]);
+  //   animations.push([i, 3]);
+  //   animations.push([i, arr[i]]);
+  // }
 
   return animations;
 }
