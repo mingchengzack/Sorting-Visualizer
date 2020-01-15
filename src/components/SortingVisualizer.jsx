@@ -1,57 +1,10 @@
 import React, { Component } from "react";
 import { Navbar } from "react-bootstrap";
 import { Nav } from "react-bootstrap";
-import { withStyles } from "@material-ui/core/styles";
-import Slider from "@material-ui/core/Slider";
-import Tooltip from "@material-ui/core/Tooltip";
+import MySlider from "./Slider";
 import Navitem from "./Navitem";
 import Arraybar from "./Arraybar";
 import "./Navbar.css";
-
-function ValueLabelComponent(props) {
-  const { children, open, value } = props;
-
-  return (
-    <Tooltip open={open} enterTouchDelay={0} title={value}>
-      {children}
-    </Tooltip>
-  );
-}
-
-const PrettoSlider = withStyles({
-  root: {
-    color: "rgb(76, 187, 159)",
-    height: 8,
-    width: 160,
-    marginTop: 2,
-    marginRight: 32,
-    marginLeft: -15
-  },
-  thumb: {
-    height: 24,
-    width: 24,
-    backgroundColor: "#fff",
-    border: "2px solid currentColor",
-    marginTop: -8,
-    marginLeft: -7,
-    "&:focus,&:hover,&$active": {
-      boxShadow: "inherit"
-    }
-  },
-  active: {},
-  valueLabel: {
-    left: "calc(-50% + 4px)",
-    className: "PrivateValueLabel-circle-20"
-  },
-  track: {
-    height: 8,
-    borderRadius: 4
-  },
-  rail: {
-    height: 8,
-    borderRadius: 4
-  }
-})(Slider);
 
 const algorithms = [
   "Bubble Sort",
@@ -107,7 +60,12 @@ class SortingVisualizer extends Component {
         speed = 3;
         break;
     }
+    if (!this.arrayBar.isVisualized) this.slider.setState({ disabled: true });
     this.arrayBar.visualize(this.curAlgorithm, speed);
+  };
+
+  handleFinishVisualization = () => {
+    this.slider.setState({ disabled: false });
   };
 
   render() {
@@ -133,13 +91,9 @@ class SortingVisualizer extends Component {
               type={"button"}
               onClick={this.handleRandomGenerate}
             />
-            <PrettoSlider
-              valueLabelDisplay="auto"
-              defaultValue={75}
-              min={8}
-              max={150}
-              ValueLabelComponent={ValueLabelComponent}
+            <MySlider
               onChange={this.handleChangeArraySize}
+              onRef={ref => (this.slider = ref)}
             />
             <Navitem
               name={"Speed"}
@@ -150,7 +104,10 @@ class SortingVisualizer extends Component {
             />
           </Nav>
         </Navbar>
-        <Arraybar onRef={ref => (this.arrayBar = ref)} />
+        <Arraybar
+          finishVisualization={this.handleFinishVisualization}
+          onRef={ref => (this.arrayBar = ref)}
+        />
       </div>
     );
   }

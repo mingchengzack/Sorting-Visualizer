@@ -264,7 +264,7 @@ export function heapSort(arr) {
 }
 
 // radix sort implentation
-function countSort(arr, n, minValue, exp, radix, animations, sorted) {
+function countSort(arr, n, minValue, exp, radix, animations) {
   let sortedArr = new Array(n);
   let buckets = new Array(radix);
   sortedArr.fill(0);
@@ -323,7 +323,7 @@ function countSort(arr, n, minValue, exp, radix, animations, sorted) {
   }
 }
 
-export function radixSort(arr, radix, sorted) {
+export function radixSort(arr, radix) {
   let animations = [];
   const n = arr.length;
 
@@ -337,15 +337,7 @@ export function radixSort(arr, radix, sorted) {
 
   // repeated counting sort for each digit
   for (let exp = 1; (maxValue - minValue) / exp >= 1; exp *= radix)
-    countSort(
-      arr,
-      n,
-      minValue,
-      exp,
-      radix,
-      animations,
-      (maxValue - minValue) / (exp * radix) < 1
-    );
+    countSort(arr, n, minValue, exp, radix, animations);
 
   // firnish sorted animations
   for (let i = 0; i < n; i++) {

@@ -116,6 +116,7 @@ class Arraybar extends Component {
     // finish visualization
     setTimeout(() => {
       this.isVisualized = false;
+      this.props.finishVisualization();
     }, 310 + animations.length * speed);
   }
 
