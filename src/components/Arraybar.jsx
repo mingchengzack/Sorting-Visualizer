@@ -283,8 +283,10 @@ class Arraybar extends Component {
     for (let i = 0; i < animations.length; i++) {
       if (i % 4 === 3) {
         // overwriting
-        const [barIdx, newValue] = animations[i];
+        const [barIdx, newValue, isBucket] = animations[i];
         setTimeout(() => {
+          if (isBucket)
+            this[`element-${barIdx}`].setAnimation(animationType.YELLOW);
           this[`element-${barIdx}`].setElement(newValue, this.width);
         }, 300 + i * speed);
       } else {
@@ -296,9 +298,8 @@ class Arraybar extends Component {
             : i % 4 === 1
             ? animationType.BLUE
             : animationType.DEFAULT;
-        if (bucketColor === 1) color = animationType.YELLOW;
-        else if (bucketColor === 2) color = animationType.DEFAULT;
-        else if (bucketColor === 3) color = animationType.PURPLE;
+        if (bucketColor === 1) color = animationType.DEFAULT;
+        else if (bucketColor === 2) color = animationType.PURPLE;
         setTimeout(() => {
           this[`element-${barIdx}`].setAnimation(color);
         }, 300 + i * speed);

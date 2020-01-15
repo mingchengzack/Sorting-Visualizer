@@ -287,28 +287,39 @@ function countSort(arr, n, minValue, exp, radix, animations, sorted) {
   for (let i = 1; i < radix; i++) buckets[i] += buckets[i - 1];
 
   // mark first bucket's element as yellow
-  for (let i of buckets) {
-    firstBuckets.push(i - 1);
-    animations.push([i - 1, 1]);
-    animations.push([i - 1, 1]);
-    animations.push([i - 1, 1]);
-    animations.push([i - 1, arr[i - 1]]);
-  }
+  for (let i of buckets) firstBuckets.push(i - 1);
+
+  // overwriting animations
+  let overwriting = [];
 
   // build the shadow array
   for (let i = n - 1; i >= 0; i--) {
     const bucketIdx = Math.floor((arr[i] - minValue) / exp) % radix;
+    if (firstBuckets.includes(buckets[bucketIdx] - 1)) {
+      overwriting.unshift([buckets[bucketIdx] - 1, arr[i], true]);
+      overwriting.unshift([buckets[bucketIdx] - 1, 3]);
+      overwriting.unshift([buckets[bucketIdx] - 1, 3]);
+      overwriting.unshift([buckets[bucketIdx] - 1, 3]);
+    } else {
+      overwriting.push([buckets[bucketIdx] - 1, 0]);
+      overwriting.push([buckets[bucketIdx] - 1, 0]);
+      overwriting.push([buckets[bucketIdx] - 1, 0]);
+      overwriting.push([buckets[bucketIdx] - 1, arr[i]]);
+    }
     sortedArr[--buckets[bucketIdx]] = arr[i];
   }
 
+  for (let animation of overwriting) animations.push(animation);
+
   // copy sorted array;
-  for (let i = 0; i < n; i++) {
-    const color = sorted ? 3 : 2;
-    animations.push([i, color]);
-    animations.push([i, color]);
-    animations.push([i, color]);
-    animations.push([i, sortedArr[i]]);
-    arr[i] = sortedArr[i];
+  for (let i = 0; i < n; i++) arr[i] = sortedArr[i];
+
+  // remove bucket yellow color
+  for (let i of firstBuckets) {
+    animations.push([i, 1]);
+    animations.push([i, 1]);
+    animations.push([i, 1]);
+    animations.push([i, arr[i]]);
   }
 }
 
@@ -336,14 +347,13 @@ export function radixSort(arr, radix, sorted) {
       (maxValue - minValue) / (exp * radix) < 1
     );
 
-  // // sorted animations
-  // for (let i = 0; i < n; i++) {
-  //   // for comparing animation
-  //   animations.push([i, 3]);
-  //   animations.push([i, 3]);
-  //   animations.push([i, 3]);
-  //   animations.push([i, arr[i]]);
-  // }
+  // firnish sorted animations
+  for (let i = 0; i < n; i++) {
+    animations.push([i, 2]);
+    animations.push([i, 2]);
+    animations.push([i, 2]);
+    animations.push([i, arr[i]]);
+  }
 
   return animations;
 }
