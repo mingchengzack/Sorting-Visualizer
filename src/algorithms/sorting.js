@@ -98,6 +98,45 @@ export function insertionSort(arr) {
   return animations;
 }
 
+// selection sort implentation
+export function selectionSort(arr) {
+  let animations = [];
+  const n = arr.length;
+
+  for (let i = 0; i < n - 1; i++) {
+    // for comparing animation
+    animations.push(i);
+    animations.push(i);
+    animations.push(i);
+
+    // for overwriting animation
+    animations.push([i, i, arr[i], arr[i], false]);
+
+    // find the minimum element in the unsorted array
+    let minIdx = i;
+    for (let j = i + 1; j < n; j++) {
+      if (arr[j] < arr[minIdx]) minIdx = j;
+      // for comparing animation
+      animations.push(j);
+      animations.push(j);
+      animations.push(j);
+
+      // for overwriting animation
+      animations.push([j, j, arr[j], arr[j], false]);
+    }
+    // for comparing animation
+    animations.push([i]);
+    animations.push([i]);
+    animations.push([i]);
+
+    // for overwriting animation
+    animations.push([minIdx, i, arr[minIdx], arr[i], true]);
+    // swap the elements
+    swap(arr, i, minIdx);
+  }
+  return animations;
+}
+
 // quick sort implentation
 function getRandomPivot(l, r) {
   return l + Math.floor(Math.random() * (r - l + 1));
@@ -278,6 +317,9 @@ export function heapSort(arr) {
 
   return animations;
 }
+
+// shell sort implentation
+export function shellSort(arr) {}
 
 // radix sort implentation
 function countSort(arr, n, minValue, exp, radix, animations) {

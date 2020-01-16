@@ -9,9 +9,11 @@ import "./Navbar.css";
 const algorithms = [
   "Bubble Sort",
   "Insertion Sort",
+  "Selection Sort",
   "Quick Sort",
   "Merge Sort",
   "Heap Sort",
+  "Shell Sort",
   "Radix Sort",
   "Bucket Sort"
 ];
@@ -57,7 +59,7 @@ class SortingVisualizer extends Component {
         speed = 9;
         break;
       default:
-        speed = 3;
+        speed = 5;
         break;
     }
     if (!this.arrayBar.isVisualized) this.slider.setState({ disabled: true });

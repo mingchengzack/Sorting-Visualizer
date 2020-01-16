@@ -5,9 +5,11 @@ import "./Arraybar.css";
 import {
   bubbleSort,
   insertionSort,
+  selectionSort,
   quickSort,
   mergeSort,
   heapSort,
+  shellSort,
   radixSort,
   bucketSort
 } from "../algorithms/sorting";
@@ -80,7 +82,7 @@ class Arraybar extends Component {
     // ajust speed with array size
     if (this.arraySize <= 30)
       speed = Math.floor(30 / this.arraySize) * 20 + speed;
-    else speed = Math.floor((74 / this.arraySize) * 2.5) + speed;
+    else speed = Math.floor(Math.floor(74 / this.arraySize) * 4) + speed;
     let animations = [];
     switch (algorithm) {
       case "Bubble Sort":
@@ -90,6 +92,10 @@ class Arraybar extends Component {
       case "Insertion Sort":
         animations = insertionSort(this.array);
         this.insertionSortAnimations(animations, speed);
+        break;
+      case "Selection Sort":
+        animations = selectionSort(this.array);
+        this.selectionSortAnimations(animations, speed);
         break;
       case "Quick Sort":
         animations = quickSort(this.array);
@@ -102,6 +108,10 @@ class Arraybar extends Component {
       case "Heap Sort":
         animations = heapSort(this.array);
         this.heapSortAnimations(animations, speed);
+        break;
+      case "Shell Sort":
+        animations = shellSort(this.array);
+        this.shellSortAnimations(animations, speed);
         break;
       case "Radix Sort":
         const radix = 4;
@@ -171,6 +181,39 @@ class Arraybar extends Component {
       } else {
         // comparing
         const [barIdx] = animations[i];
+        const color =
+          i % 4 === 0
+            ? animationType.RED
+            : i % 4 === 1
+            ? animationType.BLUE
+            : animationType.DEFAULT;
+        setTimeout(() => {
+          this[`element-${barIdx}`].setAnimation(color);
+        }, 300 + i * speed);
+      }
+    }
+  }
+
+  selectionSortAnimations(animations, speed) {
+    for (let i = 0; i < animations.length; i++) {
+      if (i % 4 === 3) {
+        // swapping
+        const [
+          barOneIdx,
+          barTwoIdx,
+          barOneValue,
+          barTwoValue,
+          isSorted
+        ] = animations[i];
+        setTimeout(() => {
+          this[`element-${barOneIdx}`].setElement(barTwoValue, this.width);
+          this[`element-${barTwoIdx}`].setElement(barOneValue, this.width);
+          if (isSorted)
+            this[`element-${barTwoIdx}`].setAnimation(animationType.PURPLE);
+        }, 300 + i * speed);
+      } else {
+        // comparing
+        const barIdx = animations[i];
         const color =
           i % 4 === 0
             ? animationType.RED
@@ -283,6 +326,8 @@ class Arraybar extends Component {
       }
     }
   }
+
+  shellSortAnimations(animations, speed) {}
 
   radixSortAnimations(animations, speed) {
     for (let i = 0; i < animations.length; i++) {
