@@ -75,9 +75,12 @@ class Arraybar extends Component {
   visualize(algorithm, speed) {
     if (this.isVisualized) return;
     this.isVisualized = true;
-
     this.resetAnimations();
 
+    // ajust speed with array size
+    if (this.arraySize <= 30)
+      speed = Math.floor(30 / this.arraySize) * 20 + speed;
+    else speed = Math.floor((74 / this.arraySize) * 2.5) + speed;
     let animations = [];
     switch (algorithm) {
       case "Bubble Sort":

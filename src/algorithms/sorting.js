@@ -425,7 +425,7 @@ export function bucketSort(arr, bucketSize) {
 
   for (let animation of overwriting) animations.push(animation);
 
-  // copy sorted array;
+  // copy divided buckets array;
   for (let i = 0; i < n; i++) arr[i] = output[i];
 
   // divide into buckets and sort each of them using insertion sort
