@@ -106,7 +106,8 @@ class Arraybar extends Component {
         this.radixSortAnimations(animations, speed);
         break;
       case "Bucket Sort":
-        animations = bucketSort(this.array);
+        const bucketSize = Math.floor((this.arraySize * 10) / 150) + 2;
+        animations = bucketSort(this.array, bucketSize);
         this.bucketSortAnimations(animations, speed);
         break;
       default:
@@ -166,7 +167,7 @@ class Arraybar extends Component {
         }, 300 + i * speed);
       } else {
         // comparing
-        const barIdx = animations[i];
+        const [barIdx] = animations[i];
         const color =
           i % 4 === 0
             ? animationType.RED
@@ -308,7 +309,35 @@ class Arraybar extends Component {
     }
   }
 
-  bucketSortAnimations(animations, speed) {}
+  bucketSortAnimations(animations, speed) {
+    for (let i = 0; i < animations.length; i++) {
+      if (i % 4 === 3) {
+        // overwriting
+        const [barIdx, newValue, isSorted, isBucket] = animations[i];
+        setTimeout(() => {
+          if (isBucket)
+            this[`element-${barIdx}`].setAnimation(animationType.YELLOW);
+          if (isSorted)
+            this[`element-${barIdx}`].setAnimation(animationType.PURPLE);
+          this[`element-${barIdx}`].setElement(newValue, this.width);
+        }, 300 + i * speed);
+      } else {
+        // comparing
+        const [barIdx, bucketColor] = animations[i];
+        let color =
+          i % 4 === 0
+            ? animationType.RED
+            : i % 4 === 1
+            ? animationType.BLUE
+            : animationType.DEFAULT;
+        if (bucketColor === 1) color = animationType.DEFAULT;
+        else if (bucketColor === 2) color = animationType.PURPLE;
+        setTimeout(() => {
+          this[`element-${barIdx}`].setAnimation(color);
+        }, 300 + i * speed);
+      }
+    }
+  }
 
   render() {
     return (

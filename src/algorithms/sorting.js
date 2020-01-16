@@ -36,49 +36,65 @@ export function bubbleSort(arr) {
 }
 
 // insertion sort implentation
-export function insertionSort(arr) {
-  const n = arr.length;
-  let animations = [];
+function insertionSortHelper(arr, l, r, animations) {
+  // only one element
+  if (l === r) {
+    // for comparing animation
+    animations.push([l]);
+    animations.push([l]);
+    animations.push([l]);
+
+    // for overwriting animation
+    animations.push([l, arr[l], true]);
+  }
 
   // insert every element
-  for (let i = 1; i < n; i++) {
+  for (let i = l + 1; i <= r; i++) {
     let j;
     let temp = arr[i];
 
     // find the spot to insert in sorted array
-    for (j = i; j > 0 && arr[j - 1] > temp; j--) {
+    for (j = i; j > l && arr[j - 1] > temp; j--) {
       // for comparing animation
-      animations.push(j);
-      animations.push(j);
-      animations.push(j);
+      animations.push([j]);
+      animations.push([j]);
+      animations.push([j]);
 
       // for overwriting animation
-      animations.push([j, arr[j - 1], i === n - 1]);
+      animations.push([j, arr[j - 1], i === r]);
       arr[j] = arr[j - 1];
     }
 
     // for comparing animation
-    animations.push(j);
-    animations.push(j);
-    animations.push(j);
+    animations.push([j]);
+    animations.push([j]);
+    animations.push([j]);
 
     // for overwriting animation
-    animations.push([j, temp, i === n - 1]);
+    animations.push([j, temp, i === r]);
 
     arr[j] = temp;
 
     // sorted animations
-    for (let k = j - 1; k >= 0; k--) {
-      // for comparing animation
-      animations.push(k);
-      animations.push(k);
-      animations.push(k);
+    if (i === r) {
+      for (let k = j - 1; k >= l; k--) {
+        // for comparing animation
+        animations.push([k]);
+        animations.push([k]);
+        animations.push([k]);
 
-      // for overwriting animation
-      animations.push([k, arr[k], i === n - 1]);
+        // for overwriting animation
+        animations.push([k, arr[k], i === r]);
+      }
     }
   }
+}
 
+export function insertionSort(arr) {
+  const n = arr.length;
+  let animations = [];
+
+  insertionSortHelper(arr, 0, n - 1, animations);
   return animations;
 }
 
@@ -279,14 +295,14 @@ function countSort(arr, n, minValue, exp, radix, animations) {
     animations.push([i, 0]);
     animations.push([i, 0]);
     animations.push([i, 0]);
-    animations.push([i, arr[i]]);
+    animations.push([i, arr[i], false]);
     buckets[bucketIdx]++;
   }
 
   // change count[i] so that count[i] now contains actual position
   for (let i = 1; i < radix; i++) buckets[i] += buckets[i - 1];
 
-  // mark first bucket's element as yellow
+  // find last bucket's element
   for (let i of buckets) firstBuckets.push(i - 1);
 
   // overwriting animations
@@ -304,7 +320,7 @@ function countSort(arr, n, minValue, exp, radix, animations) {
       overwriting.push([buckets[bucketIdx] - 1, 0]);
       overwriting.push([buckets[bucketIdx] - 1, 0]);
       overwriting.push([buckets[bucketIdx] - 1, 0]);
-      overwriting.push([buckets[bucketIdx] - 1, arr[i]]);
+      overwriting.push([buckets[bucketIdx] - 1, arr[i], false]);
     }
     sortedArr[--buckets[bucketIdx]] = arr[i];
   }
@@ -319,7 +335,7 @@ function countSort(arr, n, minValue, exp, radix, animations) {
     animations.push([i, 1]);
     animations.push([i, 1]);
     animations.push([i, 1]);
-    animations.push([i, arr[i]]);
+    animations.push([i, arr[i], false]);
   }
 }
 
@@ -344,11 +360,80 @@ export function radixSort(arr, radix) {
     animations.push([i, 2]);
     animations.push([i, 2]);
     animations.push([i, 2]);
-    animations.push([i, arr[i]]);
+    animations.push([i, arr[i], false]);
   }
 
   return animations;
 }
 
 // bucket sort implentation
-export function bucketSort(arr) {}
+export function bucketSort(arr, bucketSize) {
+  let animations = [];
+  const n = arr.length;
+  let firstBuckets = [];
+  let output = new Array(n);
+  let buckets = new Array(bucketSize);
+  output.fill(0);
+  buckets.fill(0);
+
+  // find maximum and minimum to get the most number of digits
+  let maxValue = arr[0];
+  for (let i = 1; i < n; i++) maxValue = Math.max(maxValue, arr[i]);
+
+  for (let i = 0; i < n; i++) {
+    const bucketIdx =
+      arr[i] === maxValue
+        ? bucketSize - 1
+        : Math.floor((arr[i] * bucketSize) / maxValue);
+    // linearly scan for buckets
+    animations.push([i, 0]);
+    animations.push([i, 0]);
+    animations.push([i, 0]);
+    animations.push([i, arr[i]]);
+    buckets[bucketIdx]++;
+  }
+
+  // change count[i] so that count[i] now contains actual position
+  for (let i = 1; i < bucketSize; i++) buckets[i] += buckets[i - 1];
+  const copy = [...buckets];
+
+  // find last bucket's element
+  for (let i of buckets) firstBuckets.push(i - 1);
+
+  // overwriting animations
+  let overwriting = [];
+
+  // build the shadow array
+  for (let i = n - 1; i >= 0; i--) {
+    const bucketIdx =
+      arr[i] === maxValue
+        ? bucketSize - 1
+        : Math.floor((arr[i] * bucketSize) / maxValue);
+    if (firstBuckets.includes(buckets[bucketIdx] - 1)) {
+      overwriting.unshift([buckets[bucketIdx] - 1, arr[i], false, true]);
+      overwriting.unshift([buckets[bucketIdx] - 1, 3]);
+      overwriting.unshift([buckets[bucketIdx] - 1, 3]);
+      overwriting.unshift([buckets[bucketIdx] - 1, 3]);
+    } else {
+      overwriting.push([buckets[bucketIdx] - 1, 0]);
+      overwriting.push([buckets[bucketIdx] - 1, 0]);
+      overwriting.push([buckets[bucketIdx] - 1, 0]);
+      overwriting.push([buckets[bucketIdx] - 1, arr[i], false, false]);
+    }
+    output[--buckets[bucketIdx]] = arr[i];
+  }
+
+  for (let animation of overwriting) animations.push(animation);
+
+  // copy sorted array;
+  for (let i = 0; i < n; i++) arr[i] = output[i];
+
+  // divide into buckets and sort each of them using insertion sort
+  for (let i = -1; i < bucketSize - 1; i++) {
+    let l = i === -1 ? 0 : copy[i];
+    let r = copy[i + 1] - 1;
+    insertionSortHelper(arr, l, r, animations);
+  }
+
+  return animations;
+}
