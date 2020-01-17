@@ -137,6 +137,63 @@ export function selectionSort(arr) {
   return animations;
 }
 
+// shell sort implentation
+function sedgewickGap(n) {
+  let gaps = [112, 48, 21, 7, 3, 1];
+  for (; gaps[0] > n; gaps.shift());
+  return gaps;
+}
+
+export function shellSort(arr) {
+  let animations = [];
+  const n = arr.length;
+  const gaps = sedgewickGap(n);
+
+  // big gap to small gap
+  for (let gap of gaps) {
+    for (let i = gap; i < n; i++) {
+      // basically same as insertion sort
+      let j;
+      let temp = arr[i];
+
+      for (j = i; j >= gap && arr[j - gap] > temp; j -= gap) {
+        // for comparing animation
+        animations.push(j);
+        animations.push(j);
+        animations.push(j);
+
+        // for overwriting animation
+        animations.push([j, arr[j - gap], gap === 1 && i === n - 1]);
+        arr[j] = arr[j - gap];
+      }
+
+      // for comparing animation
+      animations.push(j);
+      animations.push(j);
+      animations.push(j);
+
+      // for overwriting animation
+      animations.push([j, temp, gap === 1 && i === n - 1]);
+      arr[j] = temp;
+
+      // sorted animations
+      if (gap === 1 && i === n - 1) {
+        for (let k = j - 1; k >= 0; k--) {
+          // for comparing animation
+          animations.push(k);
+          animations.push(k);
+          animations.push(k);
+
+          // for overwriting animation
+          animations.push([k, arr[k], gap === 1 && i === n - 1]);
+        }
+      }
+    }
+  }
+
+  return animations;
+}
+
 // quick sort implentation
 function getRandomPivot(l, r) {
   return l + Math.floor(Math.random() * (r - l + 1));
@@ -317,9 +374,6 @@ export function heapSort(arr) {
 
   return animations;
 }
-
-// shell sort implentation
-export function shellSort(arr) {}
 
 // radix sort implentation
 function countSort(arr, n, minValue, exp, radix, animations) {

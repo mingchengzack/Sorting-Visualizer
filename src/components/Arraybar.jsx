@@ -97,6 +97,10 @@ class Arraybar extends Component {
         animations = selectionSort(this.array);
         this.selectionSortAnimations(animations, speed);
         break;
+      case "Shell Sort":
+        animations = shellSort(this.array);
+        this.shellSortAnimations(animations, speed);
+        break;
       case "Quick Sort":
         animations = quickSort(this.array);
         this.quickSortAnimations(animations, speed);
@@ -108,10 +112,6 @@ class Arraybar extends Component {
       case "Heap Sort":
         animations = heapSort(this.array);
         this.heapSortAnimations(animations, speed);
-        break;
-      case "Shell Sort":
-        animations = shellSort(this.array);
-        this.shellSortAnimations(animations, speed);
         break;
       case "Radix Sort":
         const radix = 4;
@@ -210,6 +210,32 @@ class Arraybar extends Component {
           this[`element-${barTwoIdx}`].setElement(barOneValue, this.width);
           if (isSorted)
             this[`element-${barTwoIdx}`].setAnimation(animationType.PURPLE);
+        }, 300 + i * speed);
+      } else {
+        // comparing
+        const barIdx = animations[i];
+        const color =
+          i % 4 === 0
+            ? animationType.RED
+            : i % 4 === 1
+            ? animationType.BLUE
+            : animationType.DEFAULT;
+        setTimeout(() => {
+          this[`element-${barIdx}`].setAnimation(color);
+        }, 300 + i * speed);
+      }
+    }
+  }
+
+  shellSortAnimations(animations, speed) {
+    for (let i = 0; i < animations.length; i++) {
+      if (i % 4 === 3) {
+        // overwriting
+        const [barIdx, newValue, isSorted] = animations[i];
+        setTimeout(() => {
+          this[`element-${barIdx}`].setElement(newValue, this.width);
+          if (isSorted)
+            this[`element-${barIdx}`].setAnimation(animationType.PURPLE);
         }, 300 + i * speed);
       } else {
         // comparing
@@ -326,8 +352,6 @@ class Arraybar extends Component {
       }
     }
   }
-
-  shellSortAnimations(animations, speed) {}
 
   radixSortAnimations(animations, speed) {
     for (let i = 0; i < animations.length; i++) {

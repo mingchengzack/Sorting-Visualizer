@@ -10,10 +10,10 @@ const algorithms = [
   "Bubble Sort",
   "Insertion Sort",
   "Selection Sort",
+  "Shell Sort",
   "Quick Sort",
   "Merge Sort",
   "Heap Sort",
-  "Shell Sort",
   "Radix Sort",
   "Bucket Sort"
 ];
