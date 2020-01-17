@@ -12,10 +12,12 @@ https://mingchengzack.github.io/Sorting-Visualizer/
 
 ## Sorting Algorithms
 
-- Bubble Sort
-- Insertion Sort
-- Quick Sort
-- Merge Sort
-- Heap Sort
-- Radix Sort
-- Bucket Sort
+- **Bubble Sort**
+- **Insertion Sort**
+- **Selection Sort**
+- **Shell Sort**
+- **Quick Sort**
+- **Merge Sort**
+- **Heap Sort**
+- **Radix Sort**
+- **Bucket Sort**
