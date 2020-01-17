@@ -134,6 +134,16 @@ export function selectionSort(arr) {
     // swap the elements
     swap(arr, i, minIdx);
   }
+
+  // last element animation
+  // for comparing animation
+  animations.push([n - 1]);
+  animations.push([n - 1]);
+  animations.push([n - 1]);
+
+  // for overwriting animation
+  animations.push([n - 1, n - 1, arr[n - 1], arr[n - 1], true]);
+
   return animations;
 }
 
