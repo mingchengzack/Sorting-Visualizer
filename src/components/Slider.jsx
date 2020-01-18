@@ -10,7 +10,7 @@ const PrettoSlider = withStyles({
     width: 160,
     marginTop: 2,
     marginRight: 32,
-    marginLeft: -15
+    marginLeft: -35
   },
   active: {},
   disabled: {},

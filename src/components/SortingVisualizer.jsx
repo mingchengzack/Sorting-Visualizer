@@ -82,13 +82,6 @@ class SortingVisualizer extends Component {
               onClick={this.handleVisualize}
             />
             <Navitem
-              name={"Algorithms"}
-              type={"dropdown"}
-              itemList={algorithms}
-              curItem={this.curAlgorithm}
-              onChangeItem={this.handleChangeAlgorithm}
-            />
-            <Navitem
               name={"Random Generate"}
               type={"button"}
               onClick={this.handleRandomGenerate}
@@ -96,6 +89,13 @@ class SortingVisualizer extends Component {
             <MySlider
               onChange={this.handleChangeArraySize}
               onRef={ref => (this.slider = ref)}
+            />
+            <Navitem
+              name={"Algorithms"}
+              type={"dropdown"}
+              itemList={algorithms}
+              curItem={this.curAlgorithm}
+              onChangeItem={this.handleChangeAlgorithm}
             />
             <Navitem
               name={"Speed"}
