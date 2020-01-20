@@ -10,11 +10,15 @@ const algorithms = [
   "Bubble Sort",
   "Insertion Sort",
   "Selection Sort",
+  "Cocktail Shaker Sort",
+  "Gnome Sort",
+  "Bitonic Sort",
   "Shell Sort",
   "Quick Sort",
   "Merge Sort",
   "Heap Sort",
-  "Radix Sort",
+  "Radix Sort (LSD)",
+  "Radix Sort (MSD)",
   "Bucket Sort"
 ];
 

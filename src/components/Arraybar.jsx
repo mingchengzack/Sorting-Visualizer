@@ -6,11 +6,15 @@ import {
   bubbleSort,
   insertionSort,
   selectionSort,
+  cocktailShakerSort,
+  gnomeSort,
+  bitonicSort,
+  shellSort,
   quickSort,
   mergeSort,
   heapSort,
-  shellSort,
-  radixSort,
+  radixLSDSort,
+  radixMSDSort,
   bucketSort
 } from "../algorithms/sorting";
 
@@ -97,6 +101,18 @@ class Arraybar extends Component {
         animations = selectionSort(this.array);
         this.selectionSortAnimations(animations, speed);
         break;
+      case "Cocktail Shaker Sort":
+        animations = cocktailShakerSort(this.array);
+        this.cocktailShakerSortAnimations(animations, speed);
+        break;
+      case "Gnome Sort":
+        animations = gnomeSort(this.array);
+        this.gnomeSortAnimations(animations, speed);
+        break;
+      case "Bitonic Sort":
+        animations = bitonicSort(this.array);
+        this.bitonicSortAnimations(animations, speed);
+        break;
       case "Shell Sort":
         animations = shellSort(this.array);
         this.shellSortAnimations(animations, speed);
@@ -113,9 +129,13 @@ class Arraybar extends Component {
         animations = heapSort(this.array);
         this.heapSortAnimations(animations, speed);
         break;
-      case "Radix Sort":
+      case "Radix Sort (LSD)":
         const radix = 4;
-        animations = radixSort(this.array, radix);
+        animations = radixLSDSort(this.array, radix);
+        this.radixSortAnimations(animations, speed);
+        break;
+      case "Radix Sort (MSD)":
+        animations = radixMSDSort(this.array, 4);
         this.radixSortAnimations(animations, speed);
         break;
       case "Bucket Sort":
@@ -226,6 +246,12 @@ class Arraybar extends Component {
       }
     }
   }
+
+  cocktailShakerSortAnimations(animations, speed) {}
+
+  gnomeSortAnimations(animations, speed) {}
+
+  bitonicSortAnimations(animations, speed) {}
 
   shellSortAnimations(animations, speed) {
     for (let i = 0; i < animations.length; i++) {

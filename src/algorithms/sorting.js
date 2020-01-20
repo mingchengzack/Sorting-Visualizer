@@ -147,6 +147,15 @@ export function selectionSort(arr) {
   return animations;
 }
 
+// cocktail shaker sort implementation
+export function cocktailShakerSort(arr) {}
+
+// gnome sort implementation
+export function gnomeSort(arr) {}
+
+// bitonic sort implementation
+export function bitonicSort(arr) {}
+
 // shell sort implentation
 function sedgewickGap(n) {
   let gaps = [112, 48, 21, 7, 3, 1];
@@ -445,7 +454,34 @@ function countSort(arr, n, minValue, exp, radix, animations) {
   }
 }
 
-export function radixSort(arr, radix) {
+export function radixLSDSort(arr, radix) {
+  let animations = [];
+  const n = arr.length;
+
+  // find maximum and minimum to get the most number of digits
+  let maxValue = arr[0];
+  let minValue = arr[0];
+  for (let i = 1; i < arr.length; i++) {
+    maxValue = Math.max(maxValue, arr[i]);
+    minValue = Math.min(minValue, arr[i]);
+  }
+
+  // repeated counting sort for each digit
+  for (let exp = 1; (maxValue - minValue) / exp >= 1; exp *= radix)
+    countSort(arr, n, minValue, exp, radix, animations);
+
+  // firnish sorted animations
+  for (let i = 0; i < n; i++) {
+    animations.push([i, 2]);
+    animations.push([i, 2]);
+    animations.push([i, 2]);
+    animations.push([i, arr[i], false]);
+  }
+
+  return animations;
+}
+
+export function radixMSDSort(arr, radix) {
   let animations = [];
   const n = arr.length;
 
