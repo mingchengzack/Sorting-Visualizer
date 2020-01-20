@@ -236,7 +236,61 @@ export function gnomeSort(arr) {
 }
 
 // bitonic sort implementation
-export function bitonicSort(arr) {}
+function compSwap(arr, i, j, dir, animations, isSorted) {
+  // swap in the direction given
+  const isGreater = arr[i] > arr[j];
+  // comparing animations
+  animations.push([i, j]);
+  animations.push([i, j]);
+  animations.push([i, j]);
+  if (dir === isGreater) {
+    animations.push([i, j, arr[i], arr[j], isSorted]); // for swapping animation
+    swap(arr, i, j);
+  } else {
+    animations.push([i, j, arr[j], arr[i], isSorted]); // for swapping animation
+  }
+}
+
+function greatestPowerOfTwoLessThan(cnt) {
+  let k = 1;
+  while (k > 0 && k < cnt) k = k << 1;
+  return k >> 1;
+}
+
+function bitonicMerge(arr, l, cnt, dir, animations, isSorted) {
+  if (cnt <= 1) return;
+
+  let k = greatestPowerOfTwoLessThan(cnt);
+  for (let i = l; i < l + cnt - k; i++)
+    compSwap(arr, i, i + k, dir, animations, isSorted && cnt - k === 1);
+
+  bitonicMerge(arr, l, k, dir, animations, isSorted);
+  bitonicMerge(arr, l + k, cnt - k, dir, animations, isSorted);
+  return;
+}
+
+function bitonicSortHelper(arr, l, cnt, dir, animations) {
+  if (cnt <= 1) return;
+
+  let k = Math.floor(cnt / 2);
+
+  // sort in ascending order
+  bitonicSortHelper(arr, l, k, !dir, animations);
+
+  // sort in descending order
+  bitonicSortHelper(arr, l + k, cnt - k, dir, animations);
+
+  // merge sequence in asecending order
+  bitonicMerge(arr, l, cnt, dir, animations, cnt === arr.length);
+
+  return;
+}
+
+export function bitonicSort(arr) {
+  let animations = [];
+  bitonicSortHelper(arr, 0, arr.length, true, animations);
+  return animations;
+}
 
 // shell sort implentation
 function sedgewickGap(n) {
@@ -338,6 +392,7 @@ function quickSortHelper(arr, l, r, animations) {
 
   quickSortHelper(arr, partitionIdx + 1, r, animations);
   quickSortHelper(arr, l, partitionIdx - 1, animations);
+  return;
 }
 
 export function quickSort(arr) {
@@ -418,6 +473,7 @@ function mergeSortHelper(arr, l, r, animations) {
   mergeSortHelper(arr, l, m, animations);
   mergeSortHelper(arr, m + 1, r, animations);
   merge(arr, l, r, m, animations);
+  return;
 }
 
 export function mergeSort(arr) {

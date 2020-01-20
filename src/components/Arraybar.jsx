@@ -314,7 +314,41 @@ class Arraybar extends Component {
     }
   }
 
-  bitonicSortAnimations(animations, speed) {}
+  bitonicSortAnimations(animations, speed) {
+    for (let i = 0; i < animations.length; i++) {
+      if (i % 4 === 3) {
+        // swapping
+        const [
+          barOneIdx,
+          barTwoIdx,
+          barOneValue,
+          barTwoValue,
+          isSorted
+        ] = animations[i];
+        setTimeout(() => {
+          this[`element-${barOneIdx}`].setElement(barTwoValue, this.width);
+          this[`element-${barTwoIdx}`].setElement(barOneValue, this.width);
+          if (isSorted) {
+            this[`element-${barOneIdx}`].setAnimation(animationType.PURPLE);
+            this[`element-${barTwoIdx}`].setAnimation(animationType.PURPLE);
+          }
+        }, 300 + i * speed);
+      } else {
+        // comparing
+        const [barOneIdx, barTwoIdx] = animations[i];
+        const color =
+          i % 4 === 0
+            ? animationType.RED
+            : i % 4 === 1
+            ? animationType.BLUE
+            : animationType.DEFAULT;
+        setTimeout(() => {
+          this[`element-${barOneIdx}`].setAnimation(color);
+          this[`element-${barTwoIdx}`].setAnimation(color);
+        }, 300 + i * speed);
+      }
+    }
+  }
 
   shellSortAnimations(animations, speed) {
     for (let i = 0; i < animations.length; i++) {
