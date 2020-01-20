@@ -40,6 +40,8 @@ class Element extends Component {
         ? "yellow"
         : animation === animationType.PURPLE
         ? "purple"
+        : animation === animationType.PINK
+        ? "pink"
         : "";
     return (
       <div
@@ -60,5 +62,6 @@ export const animationType = {
   RED: 2,
   BLUE: 3,
   YELLOW: 4,
-  PURPLE: 5
+  PURPLE: 5,
+  PINK: 6
 };

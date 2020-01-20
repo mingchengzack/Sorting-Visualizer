@@ -619,30 +619,130 @@ export function radixLSDSort(arr, radix) {
   return animations;
 }
 
-export function radixMSDSort(arr, radix) {
-  let animations = [];
-  const n = arr.length;
+function getMostExp(maxValue, minValue, radix) {
+  let exp = 1;
+  while ((maxValue - minValue) / exp >= 1) exp *= radix;
+  return exp / radix;
+}
 
-  // find maximum and minimum to get the most number of digits
-  let maxValue = arr[0];
-  let minValue = arr[0];
-  for (let i = 1; i < arr.length; i++) {
+function sameElements(arr, l, r) {
+  for (let i = l; i < r; i++) if (arr[i] !== arr[i + 1]) return false;
+  return true;
+}
+
+function radixMSDSortHelper(arr, l, r, radix, animations) {
+  if (l >= r || sameElements(arr, l, r)) {
+    // firnish sorted animations
+    for (let i = l; i <= r; i++) {
+      animations.push([i, 2]);
+      animations.push([i, 2]);
+      animations.push([i, 2]);
+      animations.push([i, arr[i], false]);
+    }
+    return; // only one element or all elements are the same
+  }
+
+  let sortedArr = new Array(r - l + 1);
+  let buckets = new Array(radix);
+  sortedArr.fill(0);
+  buckets.fill(0);
+  let firstBuckets = [];
+
+  // find maximum and minimum to get the most significant digit
+  let maxValue = arr[l];
+  let minValue = arr[l];
+  for (let i = l + 1; i <= r; i++) {
     maxValue = Math.max(maxValue, arr[i]);
     minValue = Math.min(minValue, arr[i]);
   }
 
-  // repeated counting sort for each digit
-  for (let exp = 1; (maxValue - minValue) / exp >= 1; exp *= radix)
-    countSort(arr, n, minValue, exp, radix, animations);
+  const exp = getMostExp(maxValue, minValue, radix);
 
-  // firnish sorted animations
-  for (let i = 0; i < n; i++) {
-    animations.push([i, 2]);
-    animations.push([i, 2]);
-    animations.push([i, 2]);
+  // color border of the bucket
+  animations.push([l, 3]);
+  animations.push([l, 3]);
+  animations.push([l, 3]);
+  animations.push([l, arr[l], false]);
+
+  animations.push([r, 3]);
+  animations.push([r, 3]);
+  animations.push([r, 3]);
+  animations.push([r, arr[r], false]);
+
+  // count occurences of digit of arr[i]
+  for (let i = l; i <= r; i++) {
+    const bucketIdx = Math.floor((arr[i] - minValue) / exp) % radix;
+
+    // linearly scan for buckets
+    if (i !== l && i !== r) {
+      animations.push([i, 0]);
+      animations.push([i, 0]);
+      animations.push([i, 0]);
+      animations.push([i, arr[i], false]);
+    }
+    buckets[bucketIdx]++;
+  }
+
+  // remove bucket blue color
+  for (let i of [l, r]) {
+    animations.push([i, 1]);
+    animations.push([i, 1]);
+    animations.push([i, 1]);
     animations.push([i, arr[i], false]);
   }
 
+  // change count[i] so that count[i] now contains actual position
+  for (let i = 1; i < radix; i++) buckets[i] += buckets[i - 1];
+  const copy = [...buckets];
+
+  // find last bucket's element
+  for (let i of buckets) firstBuckets.push(l + i - 1);
+
+  // overwriting animations
+  let overwriting = [];
+
+  // build the shadow array
+  for (let i = r; i >= l; i--) {
+    const bucketIdx = Math.floor((arr[i] - minValue) / exp) % radix;
+    if (firstBuckets.includes(buckets[bucketIdx] - 1 + l)) {
+      overwriting.unshift([buckets[bucketIdx] - 1 + l, arr[i], true]);
+      overwriting.unshift([buckets[bucketIdx] - 1 + l, 3]);
+      overwriting.unshift([buckets[bucketIdx] - 1 + l, 3]);
+      overwriting.unshift([buckets[bucketIdx] - 1 + l, 3]);
+    } else {
+      overwriting.push([buckets[bucketIdx] - 1 + l, 0]);
+      overwriting.push([buckets[bucketIdx] - 1 + l, 0]);
+      overwriting.push([buckets[bucketIdx] - 1 + l, 0]);
+      overwriting.push([buckets[bucketIdx] - 1 + l, arr[i], false]);
+    }
+    sortedArr[--buckets[bucketIdx]] = arr[i];
+  }
+
+  for (let animation of overwriting) animations.push(animation);
+
+  // copy sorted array;
+  for (let i = l; i <= r; i++) arr[i] = sortedArr[i - l];
+
+  // remove bucket yellow color
+  for (let i of firstBuckets) {
+    animations.push([i, 1]);
+    animations.push([i, 1]);
+    animations.push([i, 1]);
+    animations.push([i, arr[i], false]);
+  }
+
+  // divide into buckets and sort each of them using insertion sort
+  for (let i = -1; i < radix - 1; i++) {
+    let new_l = i === -1 ? l : copy[i] + l;
+    let new_r = copy[i + 1] + l - 1;
+    radixMSDSortHelper(arr, new_l, new_r, radix, animations);
+  }
+}
+
+export function radixMSDSort(arr, radix) {
+  let animations = [];
+  const n = arr.length;
+  radixMSDSortHelper(arr, 0, n - 1, radix, animations);
   return animations;
 }
 

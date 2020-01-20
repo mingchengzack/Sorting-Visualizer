@@ -132,11 +132,11 @@ class Arraybar extends Component {
       case "Radix Sort (LSD)":
         const radix = 4;
         animations = radixLSDSort(this.array, radix);
-        this.radixSortAnimations(animations, speed);
+        this.radixLSDSortAnimations(animations, speed);
         break;
       case "Radix Sort (MSD)":
         animations = radixMSDSort(this.array, 4);
-        this.radixSortAnimations(animations, speed);
+        this.radixMSDSortAnimations(animations, speed);
         break;
       case "Bucket Sort":
         const bucketSize = Math.floor((this.arraySize * 10) / 150) + 2;
@@ -476,7 +476,7 @@ class Arraybar extends Component {
     }
   }
 
-  radixSortAnimations(animations, speed) {
+  radixLSDSortAnimations(animations, speed) {
     for (let i = 0; i < animations.length; i++) {
       if (i % 4 === 3) {
         // overwriting
@@ -497,6 +497,35 @@ class Arraybar extends Component {
             : animationType.DEFAULT;
         if (bucketColor === 1) color = animationType.DEFAULT;
         else if (bucketColor === 2) color = animationType.PURPLE;
+        setTimeout(() => {
+          this[`element-${barIdx}`].setAnimation(color);
+        }, 300 + i * speed);
+      }
+    }
+  }
+
+  radixMSDSortAnimations(animations, speed) {
+    for (let i = 0; i < animations.length; i++) {
+      if (i % 4 === 3) {
+        // overwriting
+        const [barIdx, newValue, isBucket] = animations[i];
+        setTimeout(() => {
+          if (isBucket)
+            this[`element-${barIdx}`].setAnimation(animationType.YELLOW);
+          this[`element-${barIdx}`].setElement(newValue, this.width);
+        }, 300 + i * speed);
+      } else {
+        // comparing
+        const [barIdx, bucketColor] = animations[i];
+        let color =
+          i % 4 === 0
+            ? animationType.RED
+            : i % 4 === 1
+            ? animationType.BLUE
+            : animationType.DEFAULT;
+        if (bucketColor === 1) color = animationType.DEFAULT;
+        else if (bucketColor === 2) color = animationType.PURPLE;
+        else if (bucketColor === 3) color = animationType.PINK;
         setTimeout(() => {
           this[`element-${barIdx}`].setAnimation(color);
         }, 300 + i * speed);
