@@ -76,7 +76,7 @@ class SortingVisualizer extends Component {
 
   render() {
     return (
-      <div>
+      <div className="page">
         <Navbar variant="custom">
           <Navbar.Brand href="#home">Sorting Visualizer</Navbar.Brand>
           <Nav>

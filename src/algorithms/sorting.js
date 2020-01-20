@@ -161,6 +161,7 @@ export function cocktailShakerSort(arr) {
       animations.push([i, i + 1]);
       animations.push([i, i + 1]);
       animations.push([i, i + 1]);
+
       // check if we need to swap
       if (arr[i] > arr[i + 1]) {
         animations.push([i, i + 1, arr[i], arr[i + 1], false]); // for swapping animation
@@ -179,6 +180,7 @@ export function cocktailShakerSort(arr) {
       animations.push([i + 1, i]);
       animations.push([i + 1, i]);
       animations.push([i + 1, i]);
+
       // check if we need to swap
       if (arr[i] > arr[i + 1]) {
         animations.push([i, i + 1, arr[i], arr[i + 1], false]); // for swapping animation
