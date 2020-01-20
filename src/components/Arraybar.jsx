@@ -85,7 +85,7 @@ class Arraybar extends Component {
 
     // ajust speed with array size
     if (this.arraySize <= 30)
-      speed = Math.floor(30 / this.arraySize) * 20 + speed;
+      speed = Math.floor(30 / this.arraySize) * 30 + speed;
     else speed = Math.floor(Math.floor(74 / this.arraySize) * 4) + speed;
     let animations = [];
     switch (algorithm) {
@@ -247,9 +247,72 @@ class Arraybar extends Component {
     }
   }
 
-  cocktailShakerSortAnimations(animations, speed) {}
+  cocktailShakerSortAnimations(animations, speed) {
+    for (let i = 0; i < animations.length; i++) {
+      if (i % 4 === 3) {
+        // swapping
+        const [
+          barOneIdx,
+          barTwoIdx,
+          barOneValue,
+          barTwoValue,
+          isSorted
+        ] = animations[i];
+        setTimeout(() => {
+          this[`element-${barOneIdx}`].setElement(barTwoValue, this.width);
+          this[`element-${barTwoIdx}`].setElement(barOneValue, this.width);
+          if (isSorted)
+            this[`element-${barTwoIdx}`].setAnimation(animationType.PURPLE);
+        }, 300 + i * speed);
+      } else {
+        // comparing
+        const [barOneIdx, barTwoIdx] = animations[i];
+        const color =
+          i % 4 === 0
+            ? animationType.RED
+            : i % 4 === 1
+            ? animationType.BLUE
+            : animationType.DEFAULT;
+        setTimeout(() => {
+          this[`element-${barOneIdx}`].setAnimation(color);
+          this[`element-${barTwoIdx}`].setAnimation(color);
+        }, 300 + i * speed);
+      }
+    }
+  }
 
-  gnomeSortAnimations(animations, speed) {}
+  gnomeSortAnimations(animations, speed) {
+    for (let i = 0; i < animations.length; i++) {
+      if (i % 4 === 3) {
+        // swapping
+        const [
+          barOneIdx,
+          barTwoIdx,
+          barOneValue,
+          barTwoValue,
+          isSorted
+        ] = animations[i];
+        setTimeout(() => {
+          this[`element-${barOneIdx}`].setElement(barTwoValue, this.width);
+          this[`element-${barTwoIdx}`].setElement(barOneValue, this.width);
+          if (isSorted)
+            this[`element-${barTwoIdx}`].setAnimation(animationType.PURPLE);
+        }, 300 + i * speed);
+      } else {
+        // comparing
+        const barIdx = animations[i];
+        const color =
+          i % 4 === 0
+            ? animationType.RED
+            : i % 4 === 1
+            ? animationType.BLUE
+            : animationType.DEFAULT;
+        setTimeout(() => {
+          this[`element-${barIdx}`].setAnimation(color);
+        }, 300 + i * speed);
+      }
+    }
+  }
 
   bitonicSortAnimations(animations, speed) {}
 

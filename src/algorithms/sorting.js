@@ -148,10 +148,90 @@ export function selectionSort(arr) {
 }
 
 // cocktail shaker sort implementation
-export function cocktailShakerSort(arr) {}
+export function cocktailShakerSort(arr) {
+  let animations = [];
+  const n = arr.length;
+
+  let swapped;
+  do {
+    swapped = false;
+    // left shake
+    for (let i = 0; i < n - 1; i++) {
+      // for comparing animation
+      animations.push([i, i + 1]);
+      animations.push([i, i + 1]);
+      animations.push([i, i + 1]);
+      // check if we need to swap
+      if (arr[i] > arr[i + 1]) {
+        animations.push([i, i + 1, arr[i], arr[i + 1], false]); // for swapping animation
+        swap(arr, i, i + 1);
+        swapped = true;
+      } else {
+        animations.push([i, i + 1, arr[i + 1], arr[i], false]); // for swapping animation
+      }
+    }
+    if (!swapped) break; // no swapping means sorted
+
+    swapped = false;
+    // right shake
+    for (let i = n - 2; i >= 0; i--) {
+      // for comparing animation
+      animations.push([i + 1, i]);
+      animations.push([i + 1, i]);
+      animations.push([i + 1, i]);
+      // check if we need to swap
+      if (arr[i] > arr[i + 1]) {
+        animations.push([i, i + 1, arr[i], arr[i + 1], false]); // for swapping animation
+        swap(arr, i, i + 1);
+        swapped = true;
+      } else {
+        animations.push([i, i + 1, arr[i + 1], arr[i], false]); // for swapping animation
+      }
+    }
+  } while (swapped);
+
+  // firnish sorted animations
+  for (let i = 0; i < n; i++) {
+    animations.push([i, i]);
+    animations.push([i, i]);
+    animations.push([i, i]);
+    animations.push([i, i, arr[i], arr[i], true]); // for swapping animation
+  }
+
+  return animations;
+}
 
 // gnome sort implementation
-export function gnomeSort(arr) {}
+export function gnomeSort(arr) {
+  let animations = [];
+  const n = arr.length;
+
+  let pos = 0;
+  while (pos < n) {
+    // for comparing animation
+    animations.push(pos);
+    animations.push(pos);
+    animations.push(pos);
+    if (pos === 0 || arr[pos] >= arr[pos - 1]) {
+      animations.push([pos, pos, arr[pos], arr[pos], false]); // for swapping animation
+      pos++;
+    } else {
+      animations.push([pos - 1, pos, arr[pos - 1], arr[pos], false]); // for swapping animation
+      swap(arr, pos, pos - 1);
+      pos--;
+    }
+  }
+
+  // firnish sorted animations
+  for (let i = n - 1; i >= 0; i--) {
+    animations.push(i);
+    animations.push(i);
+    animations.push(i);
+    animations.push([i, i, arr[i], arr[i], true]); // for swapping animation
+  }
+
+  return animations;
+}
 
 // bitonic sort implementation
 export function bitonicSort(arr) {}
