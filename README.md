@@ -1,6 +1,6 @@
 # Sorting-Visualizer
 
-A website that helps you visualize various sorting algorithms, built with React.js.
+A website that helps you visualize various sorting algorithms, built with **React.js**.
 
 https://mingchengzack.github.io/Sorting-Visualizer/
 
